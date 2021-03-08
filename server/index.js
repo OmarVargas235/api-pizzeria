@@ -3,13 +3,17 @@ require('./config/db');
 
 const express = require('express');
 const bodyParser = require('body-parser');
-const routes = require('./routes/');
-const path = require('path');
 const cors = require('cors');
+const routes = require('./routes/');
 const expressValidator = require('express-validator');
+const hbs = require('hbs');
+const path = require('path');
 
 // crear el servidor
 const app = express();
+
+// configuracion de handlebars
+app.set('view engine', 'hbs');
 
 // habilitar bodyparser
 app.use( bodyParser.urlencoded({ extend: false }) );

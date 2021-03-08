@@ -1,5 +1,7 @@
 const User = require('../models/user');
 const bcrypt = require('bcrypt');
+const { sendEmail } = require('../config/mailer');
+const jwt = require('jsonwebtoken');
 
 module.exports.sanitizeFieldsFormRegister = (req, res, next) => {
 	
@@ -53,4 +55,68 @@ module.exports.createUser = async (req, res) => {
 			message: error.length > 0 ? error : 'Hubo un error',
 		});
 	}
+}
+
+///////////////////////////////////////////////////////////////////////
+
+module.exports.sanitizeFieldsFormSendChangePassword = (req, res, next) => {
+	
+	req.sanitizeBody('email').escape();
+
+	req.checkBody('email', "El email es obligatorio").isEmail();
+
+	const mistake = req.validationErrors();
+
+	if (mistake) {
+
+		const messageError = mistake[0].msg;
+
+		res.status(404).json({
+			ok: false,
+			message: messageError,
+		});
+
+		return;
+	}	
+
+	next();
+}
+
+module.exports.sendChangePassword = async (req, res, next) => {
+	
+	const { email } = req.body;
+	const userBD = await User.findOne({ email });
+
+	if (!userBD) {
+
+		return res.status(401).json({
+			ok: false,
+			message: 'Este usuario no existe',
+		});
+	}
+
+	// Generar token
+	const token = jwt.sign({
+	  name: userBD.name,
+	  lastName: userBD.lastName,
+	  email: userBD.email,
+	  id: userBD._id,
+	}, process.env.SEED, { expiresIn: '5m' });
+
+	// Guarda el token generado en la base de datos
+	userBD.tokenURL = token;
+	await userBD.save();
+	const resetUrl = `http://${req.headers.host}/reset-password/${userBD.tokenURL}`;
+
+	// Enviar email
+	await sendEmail({
+		email,
+		subject: 'Password Reset',
+		resetUrl
+	});
+	
+	res.status(200).json({
+		ok: true,
+		message: 'Revisa la bandeja de entrada de su correo electronico',
+	});
 }

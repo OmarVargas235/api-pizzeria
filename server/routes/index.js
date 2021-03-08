@@ -3,6 +3,7 @@ const router = express.Router();
 const pizzeriaController = require('../controller/pizzeriaController');
 const userController = require('../controller/userController');
 const authController = require('../controller/authController');
+const resetPasswordController = require('../controller/resetPasswordController');
 
 module.exports = () => {
 	
@@ -26,6 +27,19 @@ module.exports = () => {
 
 	// Cerrar sesion
 	router.post('/logout', authController.logout);
+
+	// Cambiar contraseña
+	router.post('/change-password',
+		userController.sanitizeFieldsFormSendChangePassword,
+		userController.sendChangePassword
+	);
+
+	// Pagina para resetear la contraseña
+	router.get('/reset-password/:token', resetPasswordController.sendEmail);
+	router.post('/reset-password/:url',
+		resetPasswordController.sanitizeFieldsFormResetPassword,
+		resetPasswordController.resetPassword
+	);
 
 	return router;
 }
