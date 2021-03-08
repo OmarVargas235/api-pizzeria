@@ -81,6 +81,22 @@ module.exports.loginUser = async (req, res, next) => {
 	}
 }
 
+///////////////////////////////////////////////////////////////////////
+
+module.exports.logout = async (req, res) => {
+	
+	const token = req.get('token');
+
+	const userBD = await User.findOne({ tokenAuth: token });
+	userBD.tokenAuth = undefined;
+	userBD.save();	
+
+	res.status(200).json({
+		ok: true,
+		message: 'Su session, se a cerrado correctamente',
+	});
+}
+
 // userPizza
 // const auth = {
 // 	isAuthenticated: true,

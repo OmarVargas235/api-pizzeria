@@ -24,5 +24,8 @@ module.exports = () => {
 		authController.loginUser
 	);
 
+	// Cerrar sesion
+	router.post('/logout', authController.logout);
+
 	return router;
 }
