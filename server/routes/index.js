@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const pizzeriaController = require('../controller/pizzeriaController');
+const userController = require('../controller/userController');
 
 module.exports = () => {
 	
@@ -9,6 +10,12 @@ module.exports = () => {
 
 	// Obtener pizzeria
 	router.get('/get-pizzeria/:id', pizzeriaController.getPizza);
+
+	// Registro de usuarios
+	router.post('/register-user',
+		userController.sanitizeFieldsFormRegister,
+		userController.createUser
+	);
 
 	return router;
 }

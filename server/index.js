@@ -6,6 +6,7 @@ const bodyParser = require('body-parser');
 const routes = require('./routes/');
 const path = require('path');
 const cors = require('cors');
+const expressValidator = require('express-validator');
 
 // crear el servidor
 const app = express();
@@ -16,6 +17,9 @@ app.use( bodyParser.json() );
 
 // Habilitar cors
 app.use( cors() );
+
+// validacion de campos
+app.use( expressValidator() );
 
 // Rutas de la app
 app.use('/', routes() );
