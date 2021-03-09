@@ -63,6 +63,65 @@ module.exports.selectImage = (req, res) => {
 
 /////////////////////////////////////////////////////////////////////////
 
+module.exports.sanitizeFieldsFormEditUser = (req, res, next) => {
+	
+	req.sanitizeBody('name').escape();
+	req.sanitizeBody('lastName').escape();
+
+	req.checkBody('name', "El nombre es obligatorio").notEmpty();
+	req.checkBody('lastName', "El apellido es obligatorio").notEmpty();
+
+	const mistake = req.validationErrors();
+
+	if (mistake) {
+		
+		const messageError = 'Todos los campos son obligatorios';
+
+		res.status(404).json({
+			ok: false,
+			message: messageError,
+		});
+
+		return;
+	}	
+
+	next();
+}
+
+
+module.exports.editUser = async (req, res) => {
+	
+	const { name, lastName } = req.body;
+	const id = req.params.id;
+
+	const userBD = await User.findById( id );
+
+	if (!userBD) return res.status(404).json({
+		ok: false,
+		message: 'Este usuario no existe',
+	});
+
+	userBD.name = name;
+	userBD.lastName = lastName;
+
+	await userBD.save();
+
+	const data = {
+		name: userBD.name,
+		lastName: userBD.lastName,
+		email: userBD.email,
+		id: userBD._id,
+	}
+
+	res.status(200).json({
+		ok: true,
+		message: 'Se a editado con exito',
+		data,
+	});
+}
+
+/////////////////////////////////////////////////////////////////////////
+
 module.exports.getUser = async (req, res) => {
 	
 	const userBD = await User.findOne( { tokenAuth: req.params.token } );
