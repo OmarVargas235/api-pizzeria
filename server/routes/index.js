@@ -42,6 +42,9 @@ module.exports = () => {
 		resetPasswordController.resetPassword
 	);
 
+	// Editar imagen
+	router.post('/edit-user-image/:id', editUserController.selectImage);
+
 	// Obtener el la da del perfil del usuario
 	router.get('/get-user/:token', editUserController.getUser);
 

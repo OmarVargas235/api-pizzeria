@@ -7,10 +7,13 @@ const cors = require('cors');
 const routes = require('./routes/');
 const expressValidator = require('express-validator');
 const hbs = require('hbs');
+const fileUpload = require('express-fileupload');
 const path = require('path');
 
 // crear el servidor
 const app = express();
+
+app.use( fileUpload() );
 
 // configuracion de handlebars
 app.set('view engine', 'hbs');
@@ -30,6 +33,7 @@ app.use('/', routes() );
 
 // carpeta publica
 app.use(express.static( path.resolve(__dirname, '../public/assets/') ));
+app.use(express.static( path.resolve(__dirname, '../public/uploads/') ));
 
 // puerto
 app.listen(process.env.PORT, () => console.log('corriendo en el puerto', process.env.PORT));
