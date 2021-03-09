@@ -6,13 +6,15 @@ const authController = require('../controller/authController');
 const resetPasswordController = require('../controller/resetPasswordController');
 const editUserController = require('../controller/editUserController');
 
+const auth = require('../middleware/auth');
+
 module.exports = () => {
 	
 	// Data de la tienda de pizzerias
-	router.get('/data-pizzerias', pizzeriaController.dataPizzeria);
+	router.get('/data-pizzerias', auth, pizzeriaController.dataPizzeria);
 
 	// Obtener pizzeria
-	router.get('/get-pizzeria/:id', pizzeriaController.getPizza);
+	router.get('/get-pizzeria/:id', auth, pizzeriaController.getPizza);
 
 	// Registro de usuarios
 	router.post('/register-user',
@@ -43,16 +45,17 @@ module.exports = () => {
 	);
 
 	// Editar imagen
-	router.post('/edit-user-image/:id', editUserController.selectImage);
+	router.post('/edit-user-image/:id', auth, editUserController.selectImage);
 
 	// Editar perfil
 	router.post('/edit-user/:id',
+		auth,
 		editUserController.sanitizeFieldsFormEditUser,
 		editUserController.editUser,
 	);
 
 	// Obtener el la da del perfil del usuario
-	router.get('/get-user/:token', editUserController.getUser);
+	router.get('/get-user/:token', auth, editUserController.getUser);
 
 	return router;
 }
