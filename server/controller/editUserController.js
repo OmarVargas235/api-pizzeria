@@ -33,6 +33,8 @@ module.exports.selectImage = (req, res) => {
 
 	// Cambiar nombre al archivo
 	const nameFile = `${name}-${shortid.generate()}.${extension}`;
+
+	// Path de la carpeta publica donde se guardan las imagenes
 	const uploads = path.resolve(__dirname, `../../public/uploads/`);
 	
 	file.mv(`${uploads}/${nameFile}`, async function(err) {
@@ -101,9 +103,9 @@ module.exports.editUser = async (req, res) => {
 		message: 'Este usuario no existe',
 	});
 
+	// Cambiando el nombre y el apellido en la base de datos
 	userBD.name = name;
 	userBD.lastName = lastName;
-
 	await userBD.save();
 
 	const data = {

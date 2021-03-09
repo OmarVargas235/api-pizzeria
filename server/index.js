@@ -13,6 +13,7 @@ const path = require('path');
 // crear el servidor
 const app = express();
 
+// Configuracion para guardar imagenes
 app.use( fileUpload() );
 
 // configuracion de handlebars

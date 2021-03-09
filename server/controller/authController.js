@@ -32,6 +32,8 @@ module.exports.loginUser = async (req, res, next) => {
 	const { email, password } = req.body;
 	const userBD = await User.findOne({ email });
 
+	// Comprobando que el usuario exista
+
 	if (userBD) {
 		
 		// Comprueba si las contraseñas son iguales.
@@ -85,9 +87,12 @@ module.exports.loginUser = async (req, res, next) => {
 
 module.exports.logout = async (req, res) => {
 	
+	// Autorizacion por el header
 	const token = req.get('token');
 
 	const userBD = await User.findOne({ tokenAuth: token });
+
+	// Invalidando el token que se genero al iniciar sesion
 	userBD.tokenAuth = undefined;
 	userBD.save();	
 
@@ -100,5 +105,5 @@ module.exports.logout = async (req, res) => {
 // userPizza
 // const auth = {
 // 	isAuthenticated: true,
-// 	token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoicnViZW4iLCJsYXN0TmFtZSI6ImRhcmlkbyIsImVtYWlsIjoicnVsdWd1b21lbEBnbWFpbC5jb20iLCJpZCI6IjYwM2Q1YzVkNjY5NDM4MTlkNGE3ZTU0ZCIsImlhdCI6MTYxNDc3NTQyMywiZXhwIjoxNjE0Nzc1NzIzfQ.7kTBIb-7pL_aT6WulshBZGrBMsqNq2wzhDnrWsnFvAU"
+// 	token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoicnViZW4iLCJsYXN0TmFtZSI6InZhcmdhcyIsImVtYWlsIjoicnVsdWd1b21lbEBnbWFpbC5jb20iLCJpZCI6IjYwNDc3NzIwZDg2OThmMWIxODkxZTY1YiIsImlhdCI6MTYxNTI5NzAxMCwiZXhwIjoxNjE1Mjk3NjEwfQ.7wXM8PSj9G6vRa7mOXGOeTNTs8nGnF9YnkofWkB2soQ"
 // }

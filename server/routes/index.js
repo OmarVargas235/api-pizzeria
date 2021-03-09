@@ -10,7 +10,7 @@ const auth = require('../middleware/auth');
 
 module.exports = () => {
 	
-	// Data de la tienda de pizzerias
+	// Data de las pizzerias
 	router.get('/data-pizzerias', auth, pizzeriaController.dataPizzeria);
 
 	// Obtener pizzeria
@@ -29,7 +29,7 @@ module.exports = () => {
 	);
 
 	// Cerrar sesion
-	router.post('/logout', authController.logout);
+	router.post('/logout', auth, authController.logout);
 
 	// Cambiar contraseña
 	router.post('/change-password',
@@ -54,7 +54,7 @@ module.exports = () => {
 		editUserController.editUser,
 	);
 
-	// Obtener el la da del perfil del usuario
+	// Obtener la data del perfil del usuario
 	router.get('/get-user/:token', auth, editUserController.getUser);
 
 	return router;
