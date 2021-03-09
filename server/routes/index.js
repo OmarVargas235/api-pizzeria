@@ -4,6 +4,7 @@ const pizzeriaController = require('../controller/pizzeriaController');
 const userController = require('../controller/userController');
 const authController = require('../controller/authController');
 const resetPasswordController = require('../controller/resetPasswordController');
+const editUserController = require('../controller/editUserController');
 
 module.exports = () => {
 	
@@ -34,12 +35,15 @@ module.exports = () => {
 		userController.sendChangePassword
 	);
 
-	// Pagina para resetear la contraseña
+	// Pagina para cambiar la contraseña
 	router.get('/reset-password/:token', resetPasswordController.sendEmail);
 	router.post('/reset-password/:url',
 		resetPasswordController.sanitizeFieldsFormResetPassword,
 		resetPasswordController.resetPassword
 	);
+
+	// Obtener el la da del perfil del usuario
+	router.get('/get-user/:token', editUserController.getUser);
 
 	return router;
 }
