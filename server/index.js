@@ -23,8 +23,28 @@ app.set('view engine', 'hbs');
 app.use( bodyParser.urlencoded({ extend: false }) );
 app.use( bodyParser.json() );
 
-// Habilitar cors
-app.use( cors() );
+// Configuracion de los cors
+console.log('process.env.FRONTEND_URL', process.env.FRONTEND_URL);
+
+const whiteList = [process.env.FRONTEND_URL];
+const corsOptions = {
+	origin: (origin, callback) => {
+		console.log("origin", origin);
+		// Revisar si la peticion  viene de un servidor que esta en la whiteList
+		const exists = whiteList.some(dominio => dominio === origin);
+		
+		if (exists) {
+
+			callback(null, true);
+		
+		} else {
+			
+			callback(new Error('No permitido por CORS'), true);
+		}
+	}
+}
+
+app.use( cors(corsOptions) );
 
 // validacion de campos
 app.use( expressValidator() );
