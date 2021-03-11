@@ -1,4 +1,4 @@
-const Store = require('./Store');
+const Store = require('./store');
 
 // Tipo de pizzeria
 const panos = 'Esta pizzeria se especializa en ingredientes salados';
