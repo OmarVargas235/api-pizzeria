@@ -33,7 +33,7 @@ const corsOptions = {
 		// Revisar si la peticion  viene de un servidor que esta en la whiteList
 		const exists = whiteList.some(dominio => dominio === origin);
 		
-		if (exists) {
+		if (exists || !origin) {
 
 			callback(null, true);
 		
