@@ -139,10 +139,14 @@ module.exports.getUser = async (req, res) => {
 		email: userBD.email,
 		id: userBD._id,
 	}
+	
+	// Verificar si la imagen existe o no
+	const pathImage = path.resolve(__dirname, `../../public/uploads/${userBD.img}`);
+	const existsImg = fs.existsSync(pathImage);
 
 	res.status(200).json({
 		ok: true,
-		img: userBD.img || '',
+		img: existsImg ? userBD.img : '',
 		data,
 	});
 }
