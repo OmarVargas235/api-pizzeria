@@ -24,10 +24,22 @@ app.use( bodyParser.urlencoded({ extend: false }) );
 app.use( bodyParser.json() );
 
 // Configuracion de los cors
-
+const whiteList = [process.env.FRONTEND_URL];
 const corsOptions = {
-	origin: process.env.FRONTEND_URL,
-	optionsSuccessStatus: 200,
+	origin: (origin, callback) => {
+		
+		// Revisar si la peticion  viene de un servidor que esta en la whiteList
+		const exists = whiteList.some(dominio => dominio === origin);
+		
+		if (exists || !origin) {
+
+			callback(null, true);
+		
+		} else {
+			
+			callback(new Error('No permitido por CORS'), true);
+		}
+	}
 }
 
 app.use( cors(corsOptions) );
