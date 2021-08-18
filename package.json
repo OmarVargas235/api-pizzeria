@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node server/index.js"
+    "start": "node server/index.js",
+    "nodemon": "nodemon server/index.js"
   },
   "keywords": [],
   "author": "Omar Vargas",
@@ -20,5 +21,8 @@
     "mongoose": "^5.11.18",
     "nodemailer": "^6.5.0",
     "shortid": "^2.2.16"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.12"
   }
 }
