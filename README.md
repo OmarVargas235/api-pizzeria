@@ -17,7 +17,7 @@ En el directorio del proyecto, puede ejecutar:
 #### ``npm install``
 
 Ejecuta la aplicación en modo de desarrollo.
-#### ``nodemon index o node index``
+#### ``npm run nodemon o npm start``
 Corre en el puerto _**http://localhost:5000**_.
 
 ### Estructura de carpeta
