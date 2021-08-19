@@ -6,28 +6,26 @@ module.exports.sendEmail = async (req, res) => {
 	
 	const { token } = req.params;
 
-	const user = await User.findOne({ tokenURL: token });
-
 	try {
+		
+		const user = await User.findOne({ tokenURL: token });
 
 		// Verifica si el token de la url esta vencido
 		jwt.verify(user.tokenURL, process.env.SEED);
-		res.render('reset-password', {
-			token,
-		});
 
 	} catch {
 
-		res.render('respChangePassword', {
-			message: 'Esta url ya no es valida, vuelve a solicitar otro cambio de contraseña'
-		});
+		res.status(404).json({
+			ok: false,
+			message: 'Esta url ya no es valida, vuelve a solicitar otro cambio de contraseña',
+		});	
 	}
 }
 
 ///////////////////////////////////////////////////////////////////////
 
 module.exports.sanitizeFieldsFormResetPassword = (req, res, next) => {
-	
+
 	req.sanitizeBody('password').escape();
 	req.sanitizeBody('repeatPassword').escape();
 
@@ -40,9 +38,10 @@ module.exports.sanitizeFieldsFormResetPassword = (req, res, next) => {
 		
 		const messageError = mistake.map(error => error.msg);
 
-		res.render('respChangePassword', {
-			message: messageError
-		});
+		res.status(404).json({
+			ok: false,
+			message: messageError,
+		});	
 
 		return;
 	}	
@@ -52,29 +51,31 @@ module.exports.sanitizeFieldsFormResetPassword = (req, res, next) => {
 
 module.exports.resetPassword = async (req, res) => {
 	
-	const { url } = req.params;
-	
 	try {
+		
+		const { url } = req.params;
+		const { password } = req.body;
 
 		// Sobre escribir contraseña de la base de datos
-
 		const user = await User.findOne({ tokenURL: url });
-		const hash = await bcrypt.hash(req.body.password, 12);
+		const hash = await bcrypt.hash(password, 12);
 		user.password = hash;
 		user.tokenURL = undefined;
 
 		await user.save();
 
-		res.render('respChangePassword', {
+		res.status(200).json({
+			ok: true,
 			message: 'Su contraseña se ah cambiado con exito',
-			success: true
 		});
 
 	} catch(err) {
 
-		console.log('error', err)
-		res.render('respChangePassword', {
-			message: 'Error!!!!!!!!!!!'
+		console.log('error', err);
+
+		res.status(404).json({
+			ok: true,
+			message: 'A ocurrido un error',
 		});
 	}
 }

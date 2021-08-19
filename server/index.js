@@ -6,7 +6,6 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const routes = require('./routes/');
 const expressValidator = require('express-validator');
-const hbs = require('hbs');
 const fileUpload = require('express-fileupload');
 const path = require('path');
 
@@ -15,9 +14,6 @@ const app = express();
 
 // Configuracion para guardar imagenes
 app.use( fileUpload() );
-
-// configuracion de handlebars
-app.set('view engine', 'hbs');
 
 // habilitar bodyparser
 app.use( bodyParser.urlencoded({ extend: false }) );

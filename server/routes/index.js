@@ -38,8 +38,8 @@ module.exports = () => {
 	);
 
 	// Pagina para cambiar la contraseña
-	router.get('/reset-password/:token', resetPasswordController.sendEmail);
-	router.post('/reset-password/:url',
+	router.post('/reset-password/:token', resetPasswordController.sendEmail);
+	router.post('/send-form-password/:url',
 		resetPasswordController.sanitizeFieldsFormResetPassword,
 		resetPasswordController.resetPassword
 	);

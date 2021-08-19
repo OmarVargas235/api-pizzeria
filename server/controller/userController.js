@@ -90,13 +90,10 @@ module.exports.sendChangePassword = async (req, res, next) => {
 		const { email } = req.body;
 		const userBD = await User.findOne({ email });
 
-		if (!userBD) {
-
-			return res.status(401).json({
-				ok: false,
-				message: 'Este usuario no existe',
-			});
-		}
+		if (!userBD) return res.status(401).json({
+			ok: false,
+			message: 'Este usuario no existe',
+		});
 
 		// Generar token
 		const token = jwt.sign({
@@ -109,7 +106,7 @@ module.exports.sendChangePassword = async (req, res, next) => {
 		// Guarda el token generado en la base de datos
 		userBD.tokenURL = token;
 		await userBD.save();
-		const resetUrl = `http://${req.headers.host}/reset-password/${userBD.tokenURL}`;
+		const resetUrl = `${process.env.FRONTEND_URL}/reset-password/${userBD.tokenURL}`;
 
 		// Enviar email
 		await sendEmail({

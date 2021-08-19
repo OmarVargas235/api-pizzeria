@@ -33,7 +33,7 @@ const transport = nodemailer.createTransport({
 });
 
 exports.sendEmail = async (options) => {
-	
+
 	const optionsEmail = {
 		from: 'pizza <noreply@pizza_best.com',
 		to: options.email,
