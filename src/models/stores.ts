@@ -81,7 +81,6 @@ export const tableStores = async (req: Request, resp: Response, next: NextFuncti
             `);
         }
 
-
         next();
 
     } catch (err) {

@@ -1,7 +1,6 @@
 import { type Request, type Response } from 'express';
 import { pool } from '@config/db';
-import { httpError } from '@helpers/handleError';
-import { httpSuccess } from '@helpers/handleSuccess';
+import helpers from '@helpers/helpers';
 import { type Stores, type StoresAndDetailStore } from '@interfaces/stores';
 
 export const getStores = async (req: Request, resp: Response): Promise<void> => {
@@ -12,11 +11,11 @@ export const getStores = async (req: Request, resp: Response): Promise<void> => 
             select * from stores;
         `) as unknown as Stores[][];
 
-        httpSuccess({ message: "", resp, data: stores });
+        helpers.handleSuccess.httpSuccess({ message: "", resp, data: stores });
 
     } catch (err) {
 
-        httpError({ resp, err });
+        helpers.handleError.httpError({ resp, err });
     }
 }
 
@@ -31,11 +30,11 @@ export const getStoresById = async (req: Request, resp: Response): Promise<void>
         `) as unknown as Stores[][];
 
         const [store] = stores;
-        httpSuccess({ message: "", resp, data: store });
+        helpers.handleSuccess.httpSuccess({ message: "", resp, data: store });
 
     } catch (err) {
 
-        httpError({ resp, err });
+        helpers.handleError.httpError({ resp, err });
     }
 }
 
@@ -50,10 +49,10 @@ export const getStore = async (req: Request, resp: Response): Promise<void> => {
             where s.idDetail = ${id};
         `) as unknown as StoresAndDetailStore[][];
 
-        httpSuccess({ message: "", resp, data: stores });
+        helpers.handleSuccess.httpSuccess({ message: "", resp, data: stores });
 
     } catch (err) {
 
-        httpError({ resp, err });
+        helpers.handleError.httpError({ resp, err });
     }
 }

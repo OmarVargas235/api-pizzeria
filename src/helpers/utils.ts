@@ -1,8 +1,9 @@
 import { type Response } from "express";
 import jwt from 'jsonwebtoken';
 import { httpError } from "./handleError";
-import { type GenerateToken } from "@interfaces/utils";
+import { type ValidatePassword, type GenerateToken } from "@interfaces/utils";
 import fs from 'fs';
+import bcrypt from 'bcrypt';
 
 export const isEmptyObject = (body: object, resp: Response): boolean => {
 
@@ -28,4 +29,17 @@ export const createDirectory = (path: string): void => {
 
     const isDirectory = fs.existsSync(path);
     !isDirectory && fs.mkdirSync(path, {recursive:true});
+}
+
+export const validatePassword = async ({ password, passwordBD, resp }: ValidatePassword): Promise<boolean> => {
+
+    const validatePassword = await bcrypt.compare(password, passwordBD);
+        
+    if (!validatePassword) {
+        
+        httpError({ resp, err: "Contraseña incorrecta", status: 400 });
+        return true;
+    }
+
+    return false;
 }

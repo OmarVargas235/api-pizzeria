@@ -1,16 +1,15 @@
 import { type Request, type Response } from 'express';
 import bcrypt from 'bcrypt';
 
-import { pool } from '@config/db';
-import { httpError } from '@helpers/handleError';
-import { isEmptyObject, generateToken } from '@helpers/utils';
-import { httpSuccess } from '@helpers/handleSuccess';
+import config from '@config/config';
+import helpers from '@helpers/helpers';
 import { type User } from '@interfaces/users';
-import { sendEmail } from '@config/mail';
 
 export const authUser = async (req: Request, resp: Response): Promise<void> => {
 
     const body: User = req.body;
+    const { querys } = helpers.queries;
+    const { generateToken, validatePassword, isEmptyObject } = helpers.utils;
     
     try {
 
@@ -18,24 +17,14 @@ export const authUser = async (req: Request, resp: Response): Promise<void> => {
 
         if (isEmpty) return;
 
-        const [users] = await pool.query(`
-            select * from users where email = '${body.email}';
-        `) as unknown as User[][];
+        const isUser = await querys.getUsersByEmail({ email: body.email, resp });
+        if (isUser) return;
 
-        if (users.length === 0) {
-            
-            httpError({ resp, err: "El usuario no existe", status: 400 });
-            return;
-        }
+        const userBD = querys.user;
 
-        const userBD = users[0];
-        const validatePassword = await bcrypt.compare(body.password, userBD.password);
-        
-        if (!validatePassword) {
-            
-            httpError({ resp, err: "Contraseña incorrecta", status: 400 });
-            return;
-        }
+        const isPassword = await validatePassword({ password: body.password, passwordBD: userBD.password, resp });
+
+        if (isPassword) return;
         
         const token = generateToken({
             email: userBD.email,
@@ -44,34 +33,29 @@ export const authUser = async (req: Request, resp: Response): Promise<void> => {
             expire: '1h'
         });
 
-        httpSuccess<string>({ message: "Sesión iniciada con exito", resp, data: token });
+        helpers.handleSuccess.httpSuccess<string>({ message: "Sesión iniciada con exito", resp, data: token });
 
     } catch (err) {
 
-        httpError({ resp, err });
+        helpers.handleError.httpError({ resp, err });
     }
 }
 
 export const changePassword = async (req: Request, resp: Response): Promise<void> => {
 
     const body: User = req.body;
+    const { querys } = helpers.queries;
+    const { generateToken, isEmptyObject } = helpers.utils;
 
     try {
 
         const isEmpty = isEmptyObject(body, resp);
         if (isEmpty) return;
 
-        const [users] = await pool.query(`
-            select * from users where email = '${body.email}';
-        `) as unknown as User[][];
+        const isUser = await querys.getUsersByEmail({ email: body.email, resp });
+        if (isUser) return;
 
-        if (users.length === 0) {
-            
-            httpError({ resp, err: "El usuario no existe", status: 400 });
-            return;
-        }
-
-        const userBD = users[0];
+        const userBD = querys.user;
         const token = generateToken({
             email: userBD.email,
             lastName: userBD.lastName,
@@ -81,57 +65,54 @@ export const changePassword = async (req: Request, resp: Response): Promise<void
 
         userBD.tokenURL = token;
 
-        await pool.query(`
+        await config.db.pool.query(`
             update users set tokenURL="${token}" where email='${userBD.email}';
         `);
 
         const resetUrl = `${process.env.FRONTEND_URL ?? ''}/reset-password/${userBD.tokenURL}`;
 
-		await sendEmail({
+		await config.mail.sendEmail({
 			email: userBD.email,
 			subject: 'Password Reset',
 			resetUrl
 		});
 
-        httpSuccess({ message: "Revisa la bandeja de tu correo", resp });
+        helpers.handleSuccess.httpSuccess({ message: "Revisa la bandeja de tu correo", resp });
 
     } catch(err) {
 
-        httpError({ resp, err });
+        helpers.handleError.httpError({ resp, err });
     }
 }
 
 export const resetPassword = async (req: Request, resp: Response): Promise<void> => {
 
     const body: Pick<User, "password" | "email"> = req.body;
+    const { querys } = helpers.queries;
+    const { isEmptyObject } = helpers.utils;
 
     try {
 
         const isEmpty = isEmptyObject(body, resp);
         if (isEmpty) return;
 
-        const [users] = await pool.query(`
-            select * from users where email = '${body.email}';
-        `) as unknown as User[][];
+        if (isEmpty) return;
 
-        if (users.length === 0) {
-            
-            httpError({ resp, err: "El usuario no existe", status: 400 });
-            return;
-        }
+        const isUser = await querys.getUsersByEmail({ email: body.email, resp });
+        if (isUser) return;
 
-        const userBD = users[0];
+        const userBD = querys.user;
         const hash = await bcrypt.hash(body.password, 12);
         body.password = hash;
 
-        await pool.query(`
+        await config.db.pool.query(`
             update users set password="${body.password}" where email='${userBD.email}';
         `);
 
-        httpSuccess({ message: "Password actualizado correctamente", resp });
+        helpers.handleSuccess.httpSuccess({ message: "Password actualizado correctamente", resp });
 
     } catch(err) {
 
-        httpError({ resp, err });
+        helpers.handleError.httpError({ resp, err });
     }
 }
