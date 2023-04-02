@@ -17,7 +17,6 @@ fs.readdirSync(pathRouter).filter(file => !file.includes('map')).forEach(file =>
 
     if (!skip) {
 
-
         // eslint-disable-next-line @typescript-eslint/no-var-requires
         router.use(`/${fileWithOutExt}`, require(`./${fileWithOutExt}`).router);
     }

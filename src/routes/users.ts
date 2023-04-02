@@ -4,7 +4,7 @@ import express from 'express';
 import { createUser } from '@controllers/users';
 
 // models
-import { tableUsers } from '@models/usersDB';
+import { tableUsers } from '@models/users';
 
 const router = express.Router();
 
