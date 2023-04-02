@@ -2,7 +2,7 @@ import { type Request, type Response } from 'express';
 import { pool } from '@config/db';
 import { httpError } from '@helpers/handleError';
 import { httpSuccess } from '@helpers/handleSuccess';
-import { type Stores } from '@interfaces/stores';
+import { type Stores, type StoresAndDetailStore } from '@interfaces/stores';
 
 export const getStores = async (req: Request, resp: Response): Promise<void> => {
 
@@ -32,6 +32,25 @@ export const getStoresById = async (req: Request, resp: Response): Promise<void>
 
         const [store] = stores;
         httpSuccess({ message: "", resp, data: store });
+
+    } catch (err) {
+
+        httpError({ resp, err });
+    }
+}
+
+export const getStore = async (req: Request, resp: Response): Promise<void> => {
+
+    const id: number = Number(req.params.id) ?? -1;
+
+    try {
+
+        const [stores] = await pool.query(`
+            select * from stores s inner join detailstore ds on s.idDetail = ds.id
+            where s.idDetail = ${id};
+        `) as unknown as StoresAndDetailStore[][];
+
+        httpSuccess({ message: "", resp, data: stores });
 
     } catch (err) {
 

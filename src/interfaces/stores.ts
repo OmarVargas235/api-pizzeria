@@ -6,3 +6,8 @@ export interface Stores {
     idDetail: number;
     id: number;
 }
+
+export interface StoresAndDetailStore extends Stores {
+    img: string;
+    descriptionPizza: string;
+}
