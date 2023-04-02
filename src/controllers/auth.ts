@@ -100,3 +100,38 @@ export const changePassword = async (req: Request, resp: Response): Promise<void
         httpError({ resp, err });
     }
 }
+
+export const resetPassword = async (req: Request, resp: Response): Promise<void> => {
+
+    const body: Pick<User, "password" | "email"> = req.body;
+
+    try {
+
+        const isEmpty = isEmptyObject(body, resp);
+        if (isEmpty) return;
+
+        const [users] = await pool.query(`
+            select * from users where email = '${body.email}';
+        `) as unknown as User[][];
+
+        if (users.length === 0) {
+            
+            httpError({ resp, err: "El usuario no existe", status: 400 });
+            return;
+        }
+
+        const userBD = users[0];
+        const hash = await bcrypt.hash(body.password, 12);
+        body.password = hash;
+
+        await pool.query(`
+            update users set password="${body.password}" where email='${userBD.email}';
+        `);
+
+        httpSuccess({ message: "Password actualizado correctamente", resp });
+
+    } catch(err) {
+
+        httpError({ resp, err });
+    }
+}
