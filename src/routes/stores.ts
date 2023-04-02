@@ -7,7 +7,7 @@ import { getStores, getStoresById, getStore } from '@controllers/stores';
 import { tableDetailStore, tableStores } from '@models/stores';
 
 // middleware
-import { validateToken } from 'src/middleware/validateToken';
+import { validateToken } from '@middleware/validateToken';
 
 const router = express.Router();
 

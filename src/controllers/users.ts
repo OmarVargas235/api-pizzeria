@@ -4,11 +4,12 @@ import { pool } from '@config/db';
 import { httpError } from '@helpers/handleError';
 import { httpSuccess } from '@helpers/handleSuccess';
 import { isEmptyObject } from '@helpers/utils';
-import { type CreateUser } from '@interfaces/users';
+import { type User } from '@interfaces/users';
+import { helperImg } from '@middleware/uploadImg';
 
 export const createUser = async (req: Request, resp: Response): Promise<void> => {
 
-    const body: CreateUser = req.body;
+    const body: User = req.body;
     
     try {
 
@@ -17,7 +18,7 @@ export const createUser = async (req: Request, resp: Response): Promise<void> =>
 
         const [users] = await pool.query(`
             select * from users where email = '${body.email}';
-        `) as unknown as CreateUser[][];
+        `) as unknown as User[][];
 
         if (users.length > 0) {
             
@@ -33,6 +34,44 @@ export const createUser = async (req: Request, resp: Response): Promise<void> =>
         `);
 
         httpSuccess({ message: "Usuario creado", resp });
+
+    } catch (err) {
+
+        httpError({ resp, err });
+    }
+}
+
+export const editUser = async (req: Request, resp: Response): Promise<void> => {
+
+    const body: User = req.body;
+    const { file } = req;
+    
+    try {
+        
+        const image = file !== undefined
+            ? await helperImg(file?.path ?? '', `resize-${file?.filename ?? ''}`, 200)
+            : null;
+
+        const [users] = await pool.query(`
+            select * from users where email = "${body.email}";
+        `) as unknown as User[][];
+
+        if (users.length === 0) {
+            
+            httpError({ resp, err: "No existe el usuario", status: 400 });
+            return;
+        }
+
+        const userBD = users[0];
+        const name = body.name ?? userBD.name;
+        const lastName = body.lastName ?? userBD.lastName;
+        const img: string = image as string;
+
+        await pool.query(`
+            update users set name="${name}", lastName="${lastName}", img="${img}" where email='${userBD.email}';
+        `);
+
+        httpSuccess({ message: "Usuario editado con exito", resp });
 
     } catch (err) {
 

@@ -22,6 +22,7 @@
             "@models/*": ["./src/models/*"],
             "@helpers/*": ["./src/helpers/*"],
             "@interfaces/*": ["./src/interfaces/*"],
+            "@middleware/*": ["./src/middleware/*"],
         },
         "typeRoots": ["./node_modules/@types"],
     },

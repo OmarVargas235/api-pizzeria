@@ -14,6 +14,7 @@ app.use(express.json());
 app.use('/api/1.0', router);
 
 app.use(express.static( path.resolve(__dirname, '../public/assets/') ));
+app.use(express.static( path.resolve(__dirname, '../public/optimize/') ));
 
 app.listen(3000, () => {
     

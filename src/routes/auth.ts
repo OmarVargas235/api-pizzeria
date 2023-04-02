@@ -1,11 +1,11 @@
 import express from 'express';
 
 // controllers
-import { authUser, resetPassword } from '@controllers/auth';
+import { authUser, changePassword } from '@controllers/auth';
 
 const router = express.Router();
 
 router.post('/', authUser);
-router.post('/reset-password', resetPassword);
+router.post('/send-email', changePassword);
 
 export { router };

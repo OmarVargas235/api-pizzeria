@@ -5,12 +5,12 @@ import { pool } from '@config/db';
 import { httpError } from '@helpers/handleError';
 import { isEmptyObject, generateToken } from '@helpers/utils';
 import { httpSuccess } from '@helpers/handleSuccess';
-import { type CreateUser } from '@interfaces/users';
+import { type User } from '@interfaces/users';
 import { sendEmail } from '@config/mail';
 
 export const authUser = async (req: Request, resp: Response): Promise<void> => {
 
-    const body: CreateUser = req.body;
+    const body: User = req.body;
     
     try {
 
@@ -20,7 +20,7 @@ export const authUser = async (req: Request, resp: Response): Promise<void> => {
 
         const [users] = await pool.query(`
             select * from users where email = '${body.email}';
-        `) as unknown as CreateUser[][];
+        `) as unknown as User[][];
 
         if (users.length === 0) {
             
@@ -41,6 +41,7 @@ export const authUser = async (req: Request, resp: Response): Promise<void> => {
             email: userBD.email,
             lastName: userBD.lastName,
             name: userBD.name,
+            expire: '1h'
         });
 
         httpSuccess<string>({ message: "Sesión iniciada con exito", resp, data: token });
@@ -51,9 +52,9 @@ export const authUser = async (req: Request, resp: Response): Promise<void> => {
     }
 }
 
-export const resetPassword = async (req: Request, resp: Response): Promise<void> => {
+export const changePassword = async (req: Request, resp: Response): Promise<void> => {
 
-    const body: CreateUser = req.body;
+    const body: User = req.body;
 
     try {
 
@@ -62,7 +63,7 @@ export const resetPassword = async (req: Request, resp: Response): Promise<void>
 
         const [users] = await pool.query(`
             select * from users where email = '${body.email}';
-        `) as unknown as CreateUser[][];
+        `) as unknown as User[][];
 
         if (users.length === 0) {
             

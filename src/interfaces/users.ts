@@ -1,7 +1,8 @@
-export interface CreateUser {
+export interface User {
     name: string;
     lastName: string;
     email: string;
     password: string;
     tokenURL: string;
+    img: string;
 }

@@ -2,6 +2,7 @@ import { type Response } from "express";
 import jwt from 'jsonwebtoken';
 import { httpError } from "./handleError";
 import { type GenerateToken } from "@interfaces/utils";
+import fs from 'fs';
 
 export const isEmptyObject = (body: object, resp: Response): boolean => {
 
@@ -21,4 +22,10 @@ export const generateToken = ({ name, lastName, email, expire='10m' }: GenerateT
     }, process.env.SEED ?? '', { expiresIn: expire });
 
     return token;
+}
+
+export const createDirectory = (path: string): void => {
+
+    const isDirectory = fs.existsSync(path);
+    !isDirectory && fs.mkdirSync(path, {recursive:true});
 }
