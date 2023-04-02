@@ -17,15 +17,10 @@ fs.readdirSync(pathRouter).filter(file => !file.includes('map')).forEach(file =>
 
     if (!skip) {
 
+
         // eslint-disable-next-line @typescript-eslint/no-var-requires
         router.use(`/${fileWithOutExt}`, require(`./${fileWithOutExt}`).router);
     }
-});
-
-router.get('*', (req, resp) => {
-
-    resp.status(404);
-    resp.send({ error: 'Not found' });
 });
 
 export { router };

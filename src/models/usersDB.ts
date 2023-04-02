@@ -11,7 +11,9 @@ export const tableUsers = async (req: Request, resp: Response, next: NextFunctio
                 name varchar(50) not null,
                 lastName varchar(50) not null,
                 email varchar(50) primary key not null,
-                password varchar(100) not null
+                password varchar(100) not null,
+                tokenURL varchar(256) DEFAULT "",
+                img varchar(200) DEFAULT null
             );
         `);
 

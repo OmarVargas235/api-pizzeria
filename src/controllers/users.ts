@@ -29,7 +29,7 @@ export const createUser = async (req: Request, resp: Response): Promise<void> =>
         body.password = hash;
         
         await pool.query(`
-            insert into users values ("${body.name}", "${body.lastName}", "${body.email}", "${body.password}");
+            insert into users (name, lastName, email, password) values ("${body.name}", "${body.lastName}", "${body.email}", "${body.password}");
         `);
 
         httpSuccess({ message: "Usuario creado", resp });

@@ -3,4 +3,5 @@ export interface CreateUser {
     lastName: string;
     email: string;
     password: string;
+    tokenURL: string;
 }
