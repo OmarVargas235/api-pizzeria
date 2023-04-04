@@ -33,7 +33,7 @@ export const authUser = async (req: Request, resp: Response): Promise<void> => {
             expire: '1h'
         });
 
-        helpers.handleSuccess.httpSuccess<string>({ message: "Sesión iniciada con exito", resp, data: token });
+        helpers.handleSuccess.httpSuccess({ message: "Sesión iniciada con exito", resp, data: { token, email: userBD.email } });
 
     } catch (err) {
 

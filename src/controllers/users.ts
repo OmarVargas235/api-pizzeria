@@ -34,6 +34,33 @@ export const createUser = async (req: Request, resp: Response): Promise<void> =>
     }
 }
 
+export const getDataUser = async (req: Request, resp: Response): Promise<void> => {
+    
+    const email = req.query.email;
+
+    try {
+
+        if (email === undefined) {
+
+            helpers.handleError.httpError({ resp, err: 'El email es requerido', status: 400 });
+            return;
+        }
+        
+        const [users] = await pool.query(`
+            select * from users;
+        `) as unknown as User[][];
+
+        const [user] = users;
+        const { password, tokenURL, ...obj } = user;
+
+        helpers.handleSuccess.httpSuccess({ message: "", resp, data: obj });
+
+    } catch (err) {
+
+        helpers.handleError.httpError({ resp, err });
+    }
+}
+
 export const editUser = async (req: Request, resp: Response): Promise<void> => {
 
     const body: User = req.body;

@@ -1,7 +1,7 @@
 import express from 'express';
 
 // controllers
-import { createUser, editUser } from '@controllers/users';
+import { createUser, editUser, getDataUser } from '@controllers/users';
 
 // models
 import { tableUsers } from '@models/users';
@@ -11,7 +11,10 @@ import middleware from '@middleware/middleware';
 
 const router = express.Router();
 
+const { validateToken } = middleware.validateToken;
+
 router.post('/', tableUsers, createUser);
-router.put('/edit', middleware.validateToken.validateToken, middleware.uploadImg.uploads.single('file'), editUser);
+router.get('/user', validateToken, getDataUser);
+router.put('/edit', validateToken, middleware.uploadImg.uploads.single('file'), editUser);
 
 export { router };
