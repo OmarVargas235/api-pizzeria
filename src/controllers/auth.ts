@@ -33,6 +33,10 @@ export const authUser = async (req: Request, resp: Response): Promise<void> => {
             expire: '1h'
         });
 
+        await config.db.pool.query(`
+            update users set token="${token}" where email='${userBD.email}';
+        `);
+
         helpers.handleSuccess.httpSuccess({ message: "Sesión iniciada con exito", resp, data: { token, email: userBD.email } });
 
     } catch (err) {

@@ -11,6 +11,7 @@ export const validateToken = (req: Request, resp: Response, next: NextFunction):
     try {
 
         jwt.verify(token, process.env.SEED ?? '');
+        req.token = token;
         next();
 
     } catch(err) {

@@ -1,7 +1,7 @@
 import express from 'express';
 
 // controllers
-import { createUser, editUser, getDataUser } from '@controllers/users';
+import { createUser, editUser, sessionInfo } from '@controllers/users';
 
 // models
 import { tableUsers } from '@models/users';
@@ -14,7 +14,7 @@ const router = express.Router();
 const { validateToken } = middleware.validateToken;
 
 router.post('/', tableUsers, createUser);
-router.get('/user', validateToken, getDataUser);
+router.get('/session-info', validateToken, sessionInfo);
 router.put('/edit', validateToken, middleware.uploadImg.uploads.single('file'), editUser);
 
 export { router };

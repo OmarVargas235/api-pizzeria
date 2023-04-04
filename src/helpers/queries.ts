@@ -61,5 +61,5 @@ class Querys {
 }
 
 export const querys = new Querys(
-    {email: '', img: '', lastName: '', name: '', password: '', tokenURL: ''},
+    {email: '', img: '', lastName: '', name: '', password: '', tokenURL: '', token: ''},
 );

@@ -9,7 +9,7 @@ interface Success<T> {
 
 export const httpSuccess = <T>({resp, message, status=200, data = null }: Success<T>): void => {
 
-    resp.status(500).json({
+    resp.status(status).json({
         status,
         message,
         data,
