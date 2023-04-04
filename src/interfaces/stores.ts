@@ -11,3 +11,8 @@ export interface StoresAndDetailStore extends Stores {
     img: string;
     descriptionPizza: string;
 }
+
+export interface Paginate {
+    page: number;
+    rowsPerPage: number;
+}

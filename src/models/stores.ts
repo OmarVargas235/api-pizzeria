@@ -52,9 +52,7 @@ export const tableStores = async (req: Request, resp: Response, next: NextFuncti
                 title varchar(20) not null,
                 descriptionStores varchar(60) not null,
                 direction varchar(20) not null,
-                idDetail int not null,
-                id int primary key auto_increment,
-                foreign key (idDetail) references detailStore(id)
+                id int primary key auto_increment
             );
         `);
 
@@ -68,18 +66,15 @@ export const tableStores = async (req: Request, resp: Response, next: NextFuncti
             return;
         }
 
-        for (let i = 1; i <= 6; i ++) {
-
-            await pool.query(`
-                insert into stores (logo, title, descriptionStores, direction, idDetail) values
-                    ("Panos_pizza.png", "Pano's Pizza", 'Esta pizzeria se especializa en ingredientes salados', "Calle 1 #2-3", ${i}),
-                    ("Sbarro.png", "SBarro", 'Esta pizzeria se especializa en ingredientes picantes', "Calle 2 #3-4", ${i}),
-                    ("pizzeria_camion.png", "Pizzeria Camión", 'Esta pizzeria se especializa en ingredientes vegetales', "Calle 3 #4-5", ${i}),
-                    ("voglia_di_pizza.png", "Voglia Di Pizza", 'Esta pizzeria se especializa en ingredientes maarinos', "Calle 4 #5-6", ${i}),
-                    ("stroller_pizza.png", "Stroller Pizza", 'Esta pizzeria se especializa en ingredientes tropicales', "Calle 5 #6-7", ${i}),
-                    ("trulli.png", "Trulli", 'Esta pizzeria se especializa en ingredientes mediterraneos', "Calle 9 #10-11", ${i});
-            `);
-        }
+        await pool.query(`
+            insert into stores (logo, title, descriptionStores, direction) values
+                ("Panos_pizza.png", "Pano's Pizza", 'Esta pizzeria se especializa en ingredientes salados', "Calle 1 #2-3"),
+                ("Sbarro.png", "SBarro", 'Esta pizzeria se especializa en ingredientes picantes', "Calle 2 #3-4"),
+                ("pizzeria_camion.png", "Pizzeria Camión", 'Esta pizzeria se especializa en ingredientes vegetales', "Calle 3 #4-5"),
+                ("voglia_di_pizza.png", "Voglia Di Pizza", 'Esta pizzeria se especializa en ingredientes maarinos', "Calle 4 #5-6"),
+                ("stroller_pizza.png", "Stroller Pizza", 'Esta pizzeria se especializa en ingredientes tropicales', "Calle 5 #6-7"),
+                ("trulli.png", "Trulli", 'Esta pizzeria se especializa en ingredientes mediterraneos', "Calle 9 #10-11");
+        `);
 
         next();
 

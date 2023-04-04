@@ -13,6 +13,6 @@ const router = express.Router();
 
 router.get('/', validateToken, tableDetailStore, tableStores, getStores);
 router.get('/ById', validateToken, getStoresById);
-router.get('/store/:id', validateToken, getStore);
+router.get('/store', validateToken, getStore);
 
 export { router };

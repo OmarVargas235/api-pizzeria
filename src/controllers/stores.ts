@@ -1,14 +1,18 @@
 import { type Request, type Response } from 'express';
 import { pool } from '@config/db';
 import helpers from '@helpers/helpers';
-import { type Stores, type StoresAndDetailStore } from '@interfaces/stores';
+import { type Paginate, type Stores, type StoresAndDetailStore } from '@interfaces/stores';
 
 export const getStores = async (req: Request, resp: Response): Promise<void> => {
+
+    const { page, rowsPerPage } = req.query as unknown as Paginate;
+    const limit = rowsPerPage ?? 3;
+    const offset = page ?? 0;
 
     try {
 
         const [stores] = await pool.query(`
-            select * from stores;
+            select * from stores limit ${Math.abs(limit)} offset ${Math.abs(offset)};
         `) as unknown as Stores[][];
 
         helpers.handleSuccess.httpSuccess({ message: "", resp, data: stores });
@@ -40,13 +44,10 @@ export const getStoresById = async (req: Request, resp: Response): Promise<void>
 
 export const getStore = async (req: Request, resp: Response): Promise<void> => {
 
-    const id: number = Number(req.params.id) ?? -1;
-
     try {
 
         const [stores] = await pool.query(`
-            select * from stores s inner join detailstore ds on s.idDetail = ds.id
-            where s.idDetail = ${id};
+            select * from detailstore;
         `) as unknown as StoresAndDetailStore[][];
 
         helpers.handleSuccess.httpSuccess({ message: "", resp, data: stores });
