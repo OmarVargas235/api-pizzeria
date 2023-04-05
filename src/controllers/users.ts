@@ -35,7 +35,7 @@ export const createUser = async (req: Request, resp: Response): Promise<void> =>
 }
 
 export const sessionInfo = async (req: Request, resp: Response): Promise<void> => {
-    
+
     try {
         
         const [users] = await pool.query(`
@@ -43,6 +43,13 @@ export const sessionInfo = async (req: Request, resp: Response): Promise<void> =
         `) as unknown as User[][];
 
         const [user] = users;
+
+        if (user === undefined) {
+
+            helpers.handleError.httpError({ resp, err: 'Sesión expirada', status: 401 });
+            return;
+        }
+
         const { password, tokenURL, token, ...obj } = user;
 
         helpers.handleSuccess.httpSuccess({ message: "", resp, data: obj });

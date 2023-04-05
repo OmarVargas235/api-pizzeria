@@ -5,8 +5,8 @@ import { httpError } from '@helpers/handleError';
 
 export const validateToken = (req: Request, resp: Response, next: NextFunction): void => {
 
-    const bearer = req.rawHeaders[1];
-    const token = bearer.split(' ')[1] ?? '';
+    const bearer = req.rawHeaders.find(v => v.includes('Bearer'));
+    const token = bearer?.split(' ').pop() ?? '';
 
     try {
 
