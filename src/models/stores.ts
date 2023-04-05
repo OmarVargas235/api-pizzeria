@@ -10,7 +10,7 @@ export const tableDetailStore = async (req: Request, resp: Response, next: NextF
             create table if not exists detailStore(
                 id int primary key auto_increment,
                 img varchar(60),
-                descriptionPizza varchar(16),
+                descriptionPizza varchar(30),
                 idStore int,
                 foreign key (idStore) REFERENCES stores(id)
             );
@@ -35,7 +35,7 @@ export const tableDetailStore = async (req: Request, resp: Response, next: NextF
                     ("vegetales.png", "Pizza de Vegetales", ${i}),
                     ("vegetales&atun.png", "Pizza de Vegetales y Atun", ${i}),
                     ("queso&champiñones.png", "Pizza 3 Quesos con Champiñones", ${i}),
-                    ("queso&jamon.png.png", "Pizza de Jamon y Queso", ${i});
+                    ("queso&jamon.png", "Pizza de Jamon y Queso", ${i});
             `);
         }
 

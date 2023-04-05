@@ -35,7 +35,18 @@ export const getStoresById = async (req: Request, resp: Response): Promise<void>
             where s.id = ${id};
         `) as unknown as DetailStore[][];
 
-        helpers.handleSuccess.httpSuccess({ message: "", resp, data: stores });
+        const [store] = stores;
+        const detail = {
+            pizzeria: {
+                logo: store.logo,
+                title: store.title,
+                description: store.descriptionStores,
+                direction: store.direction,
+            },
+            pizzerias: stores.map(v => ({ id: v.id, img: v.img, description: v.descriptionPizza })) 
+        }
+
+        helpers.handleSuccess.httpSuccess({ message: "", resp, data: detail });
 
     } catch (err) {
 

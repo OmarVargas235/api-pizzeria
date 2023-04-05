@@ -1,7 +1,7 @@
 create table if not exists detailStore(
 	id int primary key auto_increment,
 	img varchar(60),
-	descriptionPizza varchar(16),
+	descriptionPizza varchar(30),
     idStore int,
     foreign key (idStore) REFERENCES stores(id)
 );
@@ -12,7 +12,7 @@ insert into detailStore (img, descriptionPizza, idStore) values
     ("vegetales.png", "Pizza de Vegetales", 1),
     ("vegetales&atun.png", "Pizza de Vegetales y Atun", 1),
     ("queso&champiñones.png", "Pizza 3 Quesos con Champiñones", 1),
-    ("queso&jamon.png.png", "Pizza de Jamon y Queso", 1);
+    ("queso&jamon.png", "Pizza de Jamon y Queso", 1);
 
 create table if not exists stores(
     logo varchar(20),
