@@ -8,9 +8,11 @@ export const tableDetailStore = async (req: Request, resp: Response, next: NextF
 
         await pool.query(`
             create table if not exists detailStore(
-                img varchar(30),
-                descriptionPizza varchar(30),
-                id int primary key auto_increment
+                id int primary key auto_increment,
+                img varchar(60),
+                descriptionPizza varchar(16),
+                idStore int,
+                foreign key (idStore) REFERENCES stores(id)
             );
         `);
 
@@ -24,15 +26,18 @@ export const tableDetailStore = async (req: Request, resp: Response, next: NextF
             return;
         }
 
-        await pool.query(`
-            insert into detailStore (img, descriptionPizza) values
-                ("pollo.png", "Pizza de Pollo"),
-                ("pollo&champiñones.png", "Pizza de Pollo y Champiñones"),
-                ("vegetales.png", "Pizza de Vegetales"),
-                ("vegetales&atun.png", "Pizza de Vegetales y Atun"),
-                ("queso&champiñones.png", "Pizza 3 Quesos con Champiñones"),
-                ("queso&jamon.png.png", "Pizza de Jamon y Queso");
-        `);
+        for (let i = 1; i <= 6; i++) {
+
+            await pool.query(`
+                insert into detailStore (img, descriptionPizza, idStore) values
+                    ("pollo.png", "Pizza de Pollo", ${i}),
+                    ("pollo&champiñones.png", "Pizza de Pollo y Champiñones", ${i}),
+                    ("vegetales.png", "Pizza de Vegetales", ${i}),
+                    ("vegetales&atun.png", "Pizza de Vegetales y Atun", ${i}),
+                    ("queso&champiñones.png", "Pizza 3 Quesos con Champiñones", ${i}),
+                    ("queso&jamon.png.png", "Pizza de Jamon y Queso", ${i});
+            `);
+        }
 
         next();
 

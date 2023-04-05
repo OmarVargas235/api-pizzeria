@@ -3,11 +3,10 @@ export interface Stores {
     title: string;
     descriptionStores: string;
     direction: string;
-    idDetail: number;
     id: number;
 }
 
-export interface StoresAndDetailStore extends Stores {
+export interface DetailStore extends Stores {
     img: string;
     descriptionPizza: string;
 }

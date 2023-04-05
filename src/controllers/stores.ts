@@ -1,7 +1,7 @@
 import { type Request, type Response } from 'express';
 import { pool } from '@config/db';
 import helpers from '@helpers/helpers';
-import { type Paginate, type Stores, type StoresAndDetailStore } from '@interfaces/stores';
+import { type Paginate, type DetailStore, type Stores } from '@interfaces/stores';
 
 export const getStores = async (req: Request, resp: Response): Promise<void> => {
 
@@ -30,25 +30,10 @@ export const getStoresById = async (req: Request, resp: Response): Promise<void>
     try {
 
         const [stores] = await pool.query(`
-            select * from stores where id = ${id};
-        `) as unknown as Stores[][];
-
-        const [store] = stores;
-        helpers.handleSuccess.httpSuccess({ message: "", resp, data: store });
-
-    } catch (err) {
-
-        helpers.handleError.httpError({ resp, err });
-    }
-}
-
-export const getStore = async (req: Request, resp: Response): Promise<void> => {
-
-    try {
-
-        const [stores] = await pool.query(`
-            select * from detailstore;
-        `) as unknown as StoresAndDetailStore[][];
+            select s.logo, s.title, s.descriptionStores, s.direction, s.id, ds.img, ds.descriptionPizza, ds.id
+            from stores s inner join detailstore ds on s.id = ds.idStore
+            where s.id = ${id};
+        `) as unknown as DetailStore[][];
 
         helpers.handleSuccess.httpSuccess({ message: "", resp, data: stores });
 
