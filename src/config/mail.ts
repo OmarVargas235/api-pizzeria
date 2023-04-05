@@ -33,8 +33,8 @@ const transport = nodemailer.createTransport({
 	port: 465,
 	secure: true,
 	auth: {
-		user: 'omarpruebas0@gmail.com',
-		pass: 'tcgaljxptxfmokal',
+		user: 'ov1356270@gmail.com',
+		pass: 'dnuayoeqqwywchru',
 	},
 });
 
@@ -48,5 +48,5 @@ export const sendEmail = async (options: Options): Promise<void> => {
 	}
 
 	const sendMail = util.promisify(transport.sendMail);
-	void sendMail.call(transport, optionsEmail);
+	await sendMail.call(transport, optionsEmail);
 }

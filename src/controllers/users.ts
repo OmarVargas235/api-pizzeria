@@ -68,18 +68,19 @@ export const editUser = async (req: Request, resp: Response): Promise<void> => {
     const { querys } = helpers.queries;
     
     try {
-        
-        const image = file !== undefined
-            ? await middleware.uploadImg.helperImg(file?.path ?? '', `resize-${file?.filename ?? ''}`, 200)
-            : null;
 
         const isUser = await querys.getUsersByEmail({ email: body.email, resp });
         if (isUser) return;
 
         const userBD = querys.user;
+
+        const image = file !== undefined
+            ? await middleware.uploadImg.helperImg(file?.path ?? '', `resize-${file?.filename ?? ''}`, 200)
+            : userBD.img;
+
         const name = body.name ?? userBD.name;
         const lastName = body.lastName ?? userBD.lastName;
-        const img: string = image as string;
+        const img: string = image;
 
         await pool.query(`
             update users set name="${name}", lastName="${lastName}", img="${img}" where email='${userBD.email}';
