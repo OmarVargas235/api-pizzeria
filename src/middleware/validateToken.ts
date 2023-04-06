@@ -19,3 +19,19 @@ export const validateToken = (req: Request, resp: Response, next: NextFunction):
         httpError({ err: 'Sesión expirada', resp, status: 401 });
     }
 }
+
+export const validateTokenURL = (req: Request, resp: Response, next: NextFunction): void => {
+
+    const token = req.body.tokenURL;
+
+    try {
+
+        jwt.verify(token, process.env.SEED ?? '');
+        req.token = token;
+        next();
+
+    } catch(err) {
+
+        httpError({ err: 'Token invalido', resp, status: 403 });
+    }
+}

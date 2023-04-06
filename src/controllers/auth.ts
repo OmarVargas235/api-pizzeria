@@ -64,10 +64,10 @@ export const changePassword = async (req: Request, resp: Response): Promise<void
             email: userBD.email,
             lastName: userBD.lastName,
             name: userBD.name,
-            expire: '1h'
+            expire: '10m'
         });
 
-        userBD.tokenURL = token;
+        userBD.tokenURL = token.replace(/\./g, "-");
 
         await config.db.pool.query(`
             update users set tokenURL="${token}" where email='${userBD.email}';
@@ -91,7 +91,7 @@ export const changePassword = async (req: Request, resp: Response): Promise<void
 
 export const resetPassword = async (req: Request, resp: Response): Promise<void> => {
 
-    const body: Pick<User, "password" | "email"> = req.body;
+    const body: Pick<User, "password" | "tokenURL"> = req.body;
     const { querys } = helpers.queries;
     const { isEmptyObject } = helpers.utils;
 
@@ -100,9 +100,8 @@ export const resetPassword = async (req: Request, resp: Response): Promise<void>
         const isEmpty = isEmptyObject(body, resp);
         if (isEmpty) return;
 
-        if (isEmpty) return;
+        const isUser = await querys.getUsersByToken({ token: body.tokenURL, resp });
 
-        const isUser = await querys.getUsersByEmail({ email: body.email, resp });
         if (isUser) return;
 
         const userBD = querys.user;
@@ -110,7 +109,7 @@ export const resetPassword = async (req: Request, resp: Response): Promise<void>
         body.password = hash;
 
         await config.db.pool.query(`
-            update users set password="${body.password}" where email='${userBD.email}';
+            update users set password="${body.password}" where tokenURL='${userBD.tokenURL}';
         `);
 
         helpers.handleSuccess.httpSuccess({ message: "Password actualizado correctamente", resp });
