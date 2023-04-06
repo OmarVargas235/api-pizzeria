@@ -66,8 +66,8 @@ export const changePassword = async (req: Request, resp: Response): Promise<void
             name: userBD.name,
             expire: '10m'
         });
-
-        userBD.tokenURL = token.replace(/\./g, "-");
+        
+        userBD.tokenURL = token.replace(/\./g, "+");
 
         await config.db.pool.query(`
             update users set tokenURL="${token}" where email='${userBD.email}';
@@ -109,10 +109,29 @@ export const resetPassword = async (req: Request, resp: Response): Promise<void>
         body.password = hash;
 
         await config.db.pool.query(`
-            update users set password="${body.password}" where tokenURL='${userBD.tokenURL}';
+            update users set password="${body.password}", tokenURL="" where tokenURL='${userBD.tokenURL}';
         `);
 
         helpers.handleSuccess.httpSuccess({ message: "Password actualizado correctamente", resp });
+
+    } catch(err) {
+
+        helpers.handleError.httpError({ resp, err });
+    }
+}
+
+export const validateExpireToken = async (req: Request, resp: Response): Promise<void> => {
+
+    const body: Pick<User, "password" | "tokenURL"> = req.body;
+    const { querys } = helpers.queries;
+    const { isEmptyObject } = helpers.utils;
+
+    try {
+
+        const isEmpty = isEmptyObject(body, resp);
+        if (isEmpty) return;
+
+        await querys.getUsersByToken({ token: body.tokenURL, resp });
 
     } catch(err) {
 

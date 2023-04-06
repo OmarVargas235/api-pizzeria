@@ -32,6 +32,6 @@ export const validateTokenURL = (req: Request, resp: Response, next: NextFunctio
 
     } catch(err) {
 
-        httpError({ err: 'Token invalido', resp, status: 403 });
+        httpError({ err: 'Token expirado', resp, status: 403 });
     }
 }

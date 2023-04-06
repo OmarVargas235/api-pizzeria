@@ -51,7 +51,7 @@ class Querys {
         return false;
     }
 
-    public getUsersByToken = async ({ token='', resp, message="El usuario no existe", isChangeCondition=false }: Omit<UsersByEmail, 'email'>): Promise<boolean> => {
+    public getUsersByToken = async ({ token='', resp, message="Token expirado", isChangeCondition=false }: Omit<UsersByEmail, 'email'>): Promise<boolean> => {
 
         const [users] = await pool.query(`
             select * from users where tokenURL = '${token}';
@@ -59,7 +59,7 @@ class Querys {
         
         if (users.length === 0) {
                     
-            httpError({ resp, err: message, status: 400 });
+            httpError({ resp, err: message, status: 403 });
             return true;
         }
 
