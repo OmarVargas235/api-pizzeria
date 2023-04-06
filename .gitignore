@@ -2,3 +2,4 @@ node_modules
 dist
 public/optimize
 public/uploads
+.env

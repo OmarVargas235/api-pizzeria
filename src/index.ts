@@ -16,7 +16,7 @@ app.use('/api/1.0', router);
 app.use(express.static( path.resolve(__dirname, '../public/assets/') ));
 app.use(express.static( path.resolve(__dirname, '../public/optimize/') ));
 
-app.listen(3000, () => {
+app.listen(process.env.PORT, () => {
     
-    console.log('Corriendo en el puerto 3000');
+    console.log('Corriendo en el puerto', process.env.PORT);
 });
