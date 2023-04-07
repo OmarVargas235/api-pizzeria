@@ -64,8 +64,10 @@ export const changePassword = async (req: Request, resp: Response): Promise<void
             email: userBD.email,
             lastName: userBD.lastName,
             name: userBD.name,
-            expire: '10m'
+            expire: '30m'
         });
+
+        console.log(token);
         
         userBD.tokenURL = token.replace(/\./g, "+");
 
@@ -132,6 +134,8 @@ export const validateExpireToken = async (req: Request, resp: Response): Promise
         if (isEmpty) return;
 
         await querys.getUsersByToken({ token: body.tokenURL, resp });
+
+        helpers.handleSuccess.httpSuccess({ message: "", resp });
 
     } catch(err) {
 
