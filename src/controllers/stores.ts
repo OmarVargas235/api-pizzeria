@@ -31,7 +31,7 @@ export const getStoresById = async (req: Request, resp: Response): Promise<void>
 
         const [stores] = await pool.query(`
             select s.logo, s.title, s.descriptionStores, s.direction, s.id, ds.img, ds.descriptionPizza, ds.id
-            from stores s inner join detailstore ds on s.id = ds.idStore
+            from stores s inner join detailStore ds on s.id = ds.idStore
             where s.id = ${id};
         `) as unknown as DetailStore[][];
 
