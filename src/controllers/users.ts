@@ -66,6 +66,7 @@ export const editUser = async (req: Request, resp: Response): Promise<void> => {
     const { file } = req;
 
     const { querys } = helpers.queries;
+    const { saveCloudinary, deleteCloudinary } = helpers.utils;
     
     try {
 
@@ -74,16 +75,21 @@ export const editUser = async (req: Request, resp: Response): Promise<void> => {
 
         const userBD = querys.user;
 
+        (userBD.idImage.length > 0 && file !== undefined) && await deleteCloudinary(userBD.idImage);
+
         const image = file !== undefined
             ? await middleware.uploadImg.helperImg(file?.path ?? '', `resize-${file?.filename ?? ''}`, 200)
             : userBD.img;
 
+        const imageCloudinary:{ id: string; url: string; } = file !== undefined ? await saveCloudinary(image) : { id: userBD.idImage, url: userBD.img };
+
         const name = body.name ?? userBD.name;
         const lastName = body.lastName ?? userBD.lastName;
-        const img: string = image;
+        const img: string = imageCloudinary.url;
+        const idImage: string = imageCloudinary.id;
 
         await pool.query(`
-            update users set name="${name}", lastName="${lastName}", img="${img}" where email='${userBD.email}';
+            update users set name="${name}", lastName="${lastName}", img="${img}", idImage="${idImage}" where email='${userBD.email}';
         `);
 
         helpers.handleSuccess.httpSuccess({ message: "Usuario editado con exito", resp });

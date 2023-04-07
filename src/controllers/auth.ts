@@ -66,8 +66,6 @@ export const changePassword = async (req: Request, resp: Response): Promise<void
             name: userBD.name,
             expire: '30m'
         });
-
-        console.log(token);
         
         userBD.tokenURL = token.replace(/\./g, "+");
 

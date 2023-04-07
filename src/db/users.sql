@@ -5,7 +5,8 @@ create table if not exists users(
     password varchar(70) not null,
     token varchar(256) DEFAULT "",
     tokenURL varchar(256) DEFAULT "",
-    img varchar(200) DEFAULT null
+    img varchar(200) DEFAULT null,
+    idImage varchar(30) DEFAULT null
 );
 
 select * from users where email = '${body.email}';

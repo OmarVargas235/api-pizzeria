@@ -4,6 +4,7 @@ import { httpError } from "./handleError";
 import { type ValidatePassword, type GenerateToken } from "@interfaces/utils";
 import fs from 'fs';
 import bcrypt from 'bcrypt';
+import { v2 as cloudinary } from "cloudinary";
 
 export const isEmptyObject = (body: object, resp: Response): boolean => {
 
@@ -42,4 +43,22 @@ export const validatePassword = async ({ password, passwordBD, resp }: ValidateP
     }
 
     return false;
+}
+
+export const saveCloudinary = async (fileName: string): Promise<{url: string; id: string}> => {
+
+    try {
+
+        const result = await cloudinary.uploader.upload(`./public/optimize/${fileName}`);
+        return { id: result.public_id, url: result.url };
+		
+    } catch (error) {
+
+        return { id: '', url: '' };
+    }
+}
+
+export const deleteCloudinary = async (id: string): Promise<void> => {
+
+	await cloudinary.uploader.destroy(id);
 }

@@ -1,5 +1,5 @@
 import { type Response } from 'express';
-import { type User } from '@interfaces/users';
+import { defaultUser, type User } from '@interfaces/users';
 import { pool } from '@config/db';
 import { httpError } from '@helpers/handleError';
 
@@ -79,5 +79,5 @@ class Querys {
 }
 
 export const querys = new Querys(
-    {email: '', img: '', lastName: '', name: '', password: '', tokenURL: '', token: ''},
+    defaultUser,
 );
