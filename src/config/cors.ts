@@ -1,5 +1,3 @@
-// import { type CorsOptions } from 'cors';
-
 const whiteList = [process.env.FRONTEND_URL];
 
 export const corsOptions = {

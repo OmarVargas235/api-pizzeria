@@ -4,6 +4,7 @@ import { pool } from '@config/db';
 import helpers from '@helpers/helpers';
 import { type User } from '@interfaces/users';
 import middleware from '@middleware/middleware';
+import fs from 'fs';
 
 export const createUser = async (req: Request, resp: Response): Promise<void> => {
 
@@ -91,6 +92,12 @@ export const editUser = async (req: Request, resp: Response): Promise<void> => {
         await pool.query(`
             update users set name="${name}", lastName="${lastName}", img="${img}", idImage="${idImage}" where email='${userBD.email}';
         `);
+
+        if (userBD.idImage.length > 0 && file !== undefined) {
+
+            fs.unlinkSync(`./public/optimize/resize-${file?.filename ?? ''}`);
+            fs.unlinkSync(`./public/uploads/${file?.filename ?? ''}`);
+        }
 
         helpers.handleSuccess.httpSuccess({ message: "Usuario editado con exito", resp });
 
