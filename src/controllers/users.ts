@@ -76,7 +76,7 @@ export const editUser = async (req: Request, resp: Response): Promise<void> => {
 
         const userBD = querys.user;
 
-        (userBD.idImage.length > 0 && file !== undefined) && await deleteCloudinary(userBD.idImage);
+        (userBD.idImage !== null && file !== undefined) && await deleteCloudinary(userBD.idImage);
 
         const image = file !== undefined
             ? await middleware.uploadImg.helperImg(file?.path ?? '', `resize-${file?.filename ?? ''}`, 200)
@@ -93,7 +93,7 @@ export const editUser = async (req: Request, resp: Response): Promise<void> => {
             update users set name="${name}", lastName="${lastName}", img="${img}", idImage="${idImage}" where email='${userBD.email}';
         `);
 
-        if (userBD.idImage.length > 0 && file !== undefined) {
+        if (userBD.idImage !== null && file !== undefined) {
 
             fs.unlinkSync(`./public/optimize/resize-${file?.filename ?? ''}`);
             fs.unlinkSync(`./public/uploads/${file?.filename ?? ''}`);
