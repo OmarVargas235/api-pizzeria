@@ -13,6 +13,6 @@ export const httpError = ({resp, err, status=500 }: Error): void => {
     resp.status(status).json({
         status,
         message: error.toString(),
-        data: null,
+        data: error,
     });
 }
