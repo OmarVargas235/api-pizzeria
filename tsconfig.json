@@ -1,31 +1,38 @@
 {
     "compilerOptions": {
-        "target": "es2016",
-        "lib": ["es2015"],
-        "module": "commonjs",
         "rootDir": "./src",
-        "moduleResolution": "node",
-        "allowJs": true,
-        "sourceMap": true,
         "outDir": "./dist",
-        "esModuleInterop": true,
-        "forceConsistentCasingInFileNames": true,
+
+        "target": "ES2022",
+        "ignoreDeprecations": "6.0",
+
+        "module": "NodeNext",
+        "moduleResolution": "NodeNext",
+
         "strict": true,
-        "strictNullChecks": true,
         "noImplicitAny": true,
+        "strictNullChecks": true,
+
+        "noUncheckedIndexedAccess": true,
+        "exactOptionalPropertyTypes": true,
+        "noImplicitOverride": true,
+        "noFallthroughCasesInSwitch": true,
+
+        "isolatedModules": true,
         "skipLibCheck": true,
+
+        "esModuleInterop": true,
+
         "baseUrl": ".",
+
         "paths": {
-            "@routes/*": ["./src/routes/*"],
-            "@config/*": ["./src/config/*"],
-            "@controllers/*": ["./src/controllers/*"],
-            "@models/*": ["./src/models/*"],
-            "@helpers/*": ["./src/helpers/*"],
-            "@interfaces/*": ["./src/interfaces/*"],
-            "@middleware/*": ["./src/middleware/*"],
-        },
-        "typeRoots": ["./node_modules/@types"],
+            "@assets/*": ["src/assets/*"],
+            "@shared/*": ["src/shared/*"],
+            "@features/*": ["src/features/*"]
+        }
     },
-    "include": ["src/**/*"],
-    "exclude": ["node_modules"]
+
+    "include": ["src"],
+
+    "exclude": ["node_modules", "dist"]
 }

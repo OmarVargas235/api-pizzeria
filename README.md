@@ -2,27 +2,29 @@
 
 ### Descripcion:
 
-Esta api se encarga de servir las rutas a la apliacacion de pizzeria para que esta
-pueda logearse, registrarse, cambiar su contraseña entre otros.
+Esta api se encarga de servir las rutas a la apliacacion de pizzeria para que esta pueda logearse,
+registrarse, cambiar su contraseña entre otros.
 
 Que cosas necesitas para correr el **Proyecto**:
 
-* NodeJs => v12.18.3;
-* NPM => v6.14.5;
+- NodeJs => v12.18.3;
+- NPM => v6.14.5;
 
 ### Instalación :wrench:
 
 En el directorio del proyecto, puede ejecutar:
 
-#### ``npm install``
+#### `npm install`
 
 Ejecuta la aplicación en modo de desarrollo.
-#### ``npm run nodemon o npm start``
+
+#### `npm run nodemon o npm start`
+
 Corre en el puerto _**http://localhost:5000**_.
 
 ### Estructura de carpeta
 
-~~~
+```
 ├── public
       ├── assets
       ├── uploads
@@ -53,7 +55,7 @@ Corre en el puerto _**http://localhost:5000**_.
 ├── .gitignore
 ├── package-lock.json
 ├── package.json
-~~~
+```
 
 ### Autor [:octocat:](https://github.com/OmarVargas235)
 
