@@ -3,3 +3,4 @@ dist
 public/optimize
 public/uploads
 .env
+/generated/prisma
