@@ -28,3 +28,11 @@ export const registerSchema = z.object({
 });
 
 export type RegisterDto = z.infer<typeof registerSchema>;
+
+export interface RegisterResponseDto {
+    id: string;
+    email: string;
+    firstName: string | null;
+    lastName: string | null;
+    createdAt: Date;
+}
