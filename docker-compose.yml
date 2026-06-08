@@ -1,19 +1,19 @@
-version: '3.8'
+version: "3.8"
 
 services:
-  postgres_db:
-    image: postgres:16-alpine # Usamos la versión 16 (puedes cambiarla) en su versión ligera 'alpine'
-    container_name: node_prisma_postgres
-    restart: always
-    environment:
-      POSTGRES_USER: ${DB_USER:-postgres}
-      POSTGRES_PASSWORD: ${DB_PASSWORD:-postgres_password}
-      POSTGRES_DB: ${DB_NAME}
-    ports:
-      - "${DB_PORT:-5432}:5432"
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
+    postgres_db:
+        image: postgres:16-alpine # Usamos la versión 16 (puedes cambiarla) en su versión ligera 'alpine'
+        container_name: node_prisma_postgres
+        restart: always
+        environment:
+            POSTGRES_USER: ${DB_USER:-postgres}
+            POSTGRES_PASSWORD: ${DB_PASSWORD:-postgres_password}
+            POSTGRES_DB: ${DB_NAME}
+        ports:
+            - "${DB_PORT:-5432}:5432"
+        volumes:
+            - postgres_data:/var/lib/postgresql/data
 
 volumes:
-  postgres_data:
-    driver: local
+    postgres_data:
+        driver: local

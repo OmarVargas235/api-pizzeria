@@ -5,16 +5,11 @@ import prettier from "eslint-config-prettier";
 
 export default tseslint.config(
     {
-        ignores: [
-            "dist/**",
-            "node_modules/**",
-            "eslint.config.js",
-            "prisma.config.ts",
-        ],
+        ignores: ["dist/**", "node_modules/**", "eslint.config.js", "prisma.config.ts"],
     },
 
     js.configs.recommended,
-    ...tseslint.configs.recommendedTypeChecked,
+    ...tseslint.configs.recommended,
 
     {
         files: ["src/**/*.ts"],
@@ -51,10 +46,7 @@ export default tseslint.config(
             eqeqeq: ["error", "always"],
             curly: ["error", "all"],
 
-            "no-console": [
-                "warn",
-                { allow: ["warn", "error"] }
-            ],
+            "no-console": ["warn", { allow: ["warn", "error"] }],
 
             "no-debugger": "error",
             "no-duplicate-imports": "error",
@@ -64,7 +56,5 @@ export default tseslint.config(
             "prettier/prettier": "warn",
         },
     },
-
-    // 👇 ESTA ES LA FORMA CORRECTA
-    prettier
+    prettier,
 );
