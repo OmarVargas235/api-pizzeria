@@ -1,3 +1,4 @@
+import type { Prisma } from "@prisma/client";
 import { prisma } from "@database/prisma.js";
 
 export class AuthRepository {
@@ -7,12 +8,16 @@ export class AuthRepository {
         });
     };
 
-    createUser = (data: {
-        email: string;
-        password: string;
-        firstName: string;
-        lastName: string;
-    }) => {
-        return prisma.user.create({ data });
+    createUser = (data: Prisma.UserCreateInput) => {
+        return prisma.user.create({
+            data,
+            select: {
+                id: true,
+                email: true,
+                firstName: true,
+                lastName: true,
+                createdAt: true,
+            },
+        });
     };
 }
