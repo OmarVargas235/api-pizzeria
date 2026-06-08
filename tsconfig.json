@@ -25,14 +25,15 @@
 
         "baseUrl": ".",
 
+        "types": ["node"],
+
         "paths": {
-            "@assets/*": ["src/assets/*"],
             "@shared/*": ["src/shared/*"],
-            "@features/*": ["src/features/*"]
+            "@features/*": ["src/features/*"],
+            "@database/*": ["src/database/*"]
         }
     },
 
     "include": ["src"],
-
     "exclude": ["node_modules", "dist"]
 }
