@@ -20,4 +20,30 @@ export class AuthRepository {
             },
         });
     };
+
+    findByResetToken = (token: string) => {
+        return prisma.user.findFirst({
+            where: { resetToken: token },
+        });
+    };
+
+    updateUserById = (id: string, data: Prisma.UserUpdateInput) => {
+        return prisma.user.update({
+            where: { id },
+            data,
+        });
+    };
+
+    updateRefreshToken = (userId: string, token: string | null) => {
+        return prisma.user.update({
+            where: { id: userId },
+            data: { refreshToken: token },
+        });
+    };
+
+    findById = (id: string) => {
+        return prisma.user.findUnique({
+            where: { id },
+        });
+    };
 }

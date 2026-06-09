@@ -9,4 +9,5 @@ export type LoginDto = z.infer<typeof loginSchema>;
 
 export interface LoginResponseDto {
     accessToken: string;
+    refreshToken: string;
 }
