@@ -1,5 +1,6 @@
 import type { NextFunction, Request, Response } from "express";
 import { ZodError } from "zod";
+import multer from "multer";
 import { AppError, formatZodErrors } from "@shared/errors/index.js";
 import { HTTP_STATUS } from "@shared/http/status.js";
 
@@ -31,6 +32,14 @@ export const errorMiddleware = (
             message: "Invalid JSON format",
             data: null,
         });
+    }
+    if (error instanceof multer.MulterError) {
+        if (error.code === "LIMIT_FILE_SIZE") {
+            return res.status(HTTP_STATUS.BAD_REQUEST).json({
+                message: "File size exceeds the maximum allowed limit",
+                data: null,
+            });
+        }
     }
     return res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({
         message: "INTERNAL_SERVER_ERROR",
