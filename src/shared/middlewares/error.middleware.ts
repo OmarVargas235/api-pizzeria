@@ -11,7 +11,7 @@ export const errorMiddleware = (
 ) => {
     if (error instanceof ZodError) {
         return res.status(HTTP_STATUS.BAD_REQUEST).json({
-            message: "Validation failed",
+            message: "VALIDATION_FAILED",
             data: formatZodErrors(error.issues),
         });
     }
@@ -21,8 +21,19 @@ export const errorMiddleware = (
             data: null,
         });
     }
+    if (
+        error instanceof SyntaxError &&
+        "status" in error &&
+        error.status === 400 &&
+        "body" in error
+    ) {
+        return res.status(HTTP_STATUS.BAD_REQUEST).json({
+            message: "Invalid JSON format",
+            data: null,
+        });
+    }
     return res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({
-        message: "Internal server error",
+        message: "INTERNAL_SERVER_ERROR",
         data: null,
     });
 };
