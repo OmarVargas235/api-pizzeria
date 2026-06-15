@@ -1,5 +1,7 @@
 import type { Request, Response } from "express";
 import { ok } from "@shared/http/responses.js";
+import { AppError } from "@shared/errors/app-error.js";
+import { HTTP_STATUS } from "@shared/http/status.js";
 import { ProfileService } from "../service/profile.service.js";
 import { updateProfileSchema } from "../dto/update-profile.schema.ts.js";
 
@@ -20,5 +22,14 @@ export class ProfileController {
             lastName: dto.lastName,
         });
         return ok(res, profile, "Profile updated successfully");
+    };
+
+    updateAvatar = async (req: Request, res: Response) => {
+        const userId = req.user!.userId;
+        if (!req.file) {
+            throw new AppError(HTTP_STATUS.BAD_REQUEST, "Avatar file is required");
+        }
+        const result = await this.profileService.updateAvatar(userId, req.file);
+        return ok(res, result, "Avatar updated successfully");
     };
 }

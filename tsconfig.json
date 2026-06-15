@@ -30,7 +30,8 @@
         "paths": {
             "@shared/*": ["src/shared/*"],
             "@features/*": ["src/features/*"],
-            "@database/*": ["src/database/*"]
+            "@database/*": ["src/database/*"],
+            "@config/*": ["src/config/*"]
         }
     },
 
