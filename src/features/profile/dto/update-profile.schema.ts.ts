@@ -1,17 +1,18 @@
 import { z } from "zod";
+import { ERROR_CODES } from "@shared/errors/index.js";
 
 export const updateProfileSchema = z.object({
     firstName: z
-        .string({ error: "Last name is required" })
+        .string({ error: ERROR_CODES.VALIDATION.REQUIRED })
         .trim()
-        .min(2, "El nombre debe tener al menos 2 caracteres.")
-        .max(100, "El nombre es demasiado largo"),
+        .min(2, ERROR_CODES.VALIDATION.TOO_SHORT)
+        .max(100, ERROR_CODES.VALIDATION.TOO_LONG),
 
     lastName: z
-        .string({ error: "Last name is required" })
+        .string({ error: ERROR_CODES.VALIDATION.REQUIRED })
         .trim()
-        .min(2, "Last name must be at least 2 characters")
-        .max(100, "Last name is too long"),
+        .min(2, ERROR_CODES.VALIDATION.TOO_SHORT)
+        .max(100, ERROR_CODES.VALIDATION.TOO_LONG),
 });
 
 export type UpdateProfileDto = z.infer<typeof updateProfileSchema>;

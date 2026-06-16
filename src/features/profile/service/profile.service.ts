@@ -1,4 +1,4 @@
-import { AppError } from "@shared/errors/app-error.js";
+import { ERROR_CODES, AppError } from "@shared/errors/index.js";
 import { HTTP_STATUS } from "@shared/http/status.js";
 import { StorageService } from "@shared/storage/storage.service.js";
 import { ProfileRepository } from "../repository/profile.repository.js";
@@ -12,7 +12,7 @@ export class ProfileService {
     getProfile = async (userId: string): Promise<ProfileResponseDto> => {
         const user = await this.profileRepository.findById(userId);
         if (!user) {
-            throw new AppError(HTTP_STATUS.NOT_FOUND, "User not found");
+            throw new AppError(HTTP_STATUS.NOT_FOUND, ERROR_CODES.RESOURCE.USER_NOT_FOUND);
         }
         return {
             id: user.id,
@@ -29,7 +29,7 @@ export class ProfileService {
     ): Promise<ProfileResponseDto> => {
         const user = await this.profileRepository.findById(userId);
         if (!user) {
-            throw new AppError(HTTP_STATUS.NOT_FOUND, "User not found");
+            throw new AppError(HTTP_STATUS.NOT_FOUND, ERROR_CODES.RESOURCE.USER_NOT_FOUND);
         }
         const updatedUser = await this.profileRepository.updateProfile(userId, data);
         return {
@@ -47,7 +47,7 @@ export class ProfileService {
     ): Promise<ProfileResponseDto> => {
         const user = await this.profileRepository.findById(userId);
         if (!user) {
-            throw new AppError(HTTP_STATUS.NOT_FOUND, "User not found");
+            throw new AppError(HTTP_STATUS.NOT_FOUND, ERROR_CODES.RESOURCE.USER_NOT_FOUND);
         }
         const uploadResult = await this.storageService.uploadAvatar(file.buffer, user.id);
         const updatedUser = await this.profileRepository.updateAvatar(

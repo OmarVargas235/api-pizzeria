@@ -1,5 +1,5 @@
 import multer from "multer";
-import { AppError } from "@shared/errors/app-error.js";
+import { AppError } from "@shared/errors/index.js";
 import { HTTP_STATUS } from "@shared/http/status.js";
 
 const MAX_FILE_SIZE = 5 * 1024 * 1024;
