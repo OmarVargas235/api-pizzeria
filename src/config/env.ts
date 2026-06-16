@@ -4,14 +4,16 @@ import { z } from "zod";
 dotenv.config();
 
 const envSchema = z.object({
-    PORT: z.coerce.number(),
-    DATABASE_URL: z.string(),
-    JWT_SECRET: z.string(),
-    EMAIL_USER: z.string(),
-    EMAIL_PASSWORD: z.string(),
-    CLOUDINARY_CLOUD_NAME: z.string(),
-    CLOUDINARY_API_KEY: z.string(),
-    CLOUDINARY_API_SECRET: z.string(),
+    PORT: z.coerce.number().positive(),
+    DATABASE_URL: z.url(),
+    JWT_SECRET: z.string().min(32),
+    EMAIL_USER: z.email(),
+    EMAIL_PASSWORD: z.string().min(1),
+    CLOUDINARY_CLOUD_NAME: z.string().min(1),
+    CLOUDINARY_API_KEY: z.string().min(1),
+    CLOUDINARY_API_SECRET: z.string().min(1),
+    FRONTEND_URL: z.url(),
+    NODE_ENV: z.enum(["development", "production", "test"]).default("development"),
 });
 
-export const env = envSchema.parse(process.env);
+export const env = Object.freeze(envSchema.parse(process.env));

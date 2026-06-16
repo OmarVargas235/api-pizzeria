@@ -2,6 +2,7 @@ import bcrypt from "bcrypt";
 import crypto from "crypto";
 import { AppError } from "@shared/errors/app-error.js";
 import { HTTP_STATUS } from "@shared/http/status.js";
+import { EmailService } from "@shared/email/email.service.js";
 import { generateAccessToken, generateRefreshToken, verifyToken } from "@shared/auth/jwt.js";
 import { AuthRepository } from "../repository/auth.repository.js";
 import type { RegisterDto, RegisterResponseDto } from "../dto/register.schema.js";
@@ -12,6 +13,7 @@ import type { RefreshTokenDto } from "../dto/refresh-token.schema.js";
 
 export class AuthService {
     private readonly authRepository = new AuthRepository();
+    private readonly emailService = new EmailService();
 
     login = async (data: LoginDto): Promise<LoginResponseDto> => {
         const user = await this.authRepository.findByEmail(data.email);
@@ -57,8 +59,11 @@ export class AuthService {
             resetToken: token,
             resetTokenExpiry: expiry,
         });
-        // eslint-disable-next-line no-console
-        console.log(`Reset link: http://localhost:3000/auth/reset-password?token=${token}`);
+        await this.emailService.sendResetPasswordEmail(user.email, token);
+        return {
+            message:
+                "If an account is associated with this email, password reset instructions will be sent shortly",
+        };
     };
 
     resetPassword = async (data: ResetPasswordDto) => {

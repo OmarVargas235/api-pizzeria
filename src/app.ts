@@ -1,11 +1,18 @@
 import express from "express";
+import helmet from "helmet";
+import cors from "cors";
 import authRoutes from "@features/auth/routes/auth.js";
 import profileRoutes from "@features/profile/routes/profile.js";
 import { errorMiddleware } from "@shared/middlewares/error.middleware.js";
+import { env } from "@config/env.js";
+import { globalLimiter } from "@shared/middlewares/rate-limit.js";
 
 const app = express();
 
+app.use(helmet());
 app.use(express.json());
+app.use(cors({ origin: env.FRONTEND_URL }));
+app.use(globalLimiter);
 
 app.use("/auth", authRoutes);
 app.use("/profile", profileRoutes);
