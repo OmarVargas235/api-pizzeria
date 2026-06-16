@@ -1,30 +1,31 @@
 import { z } from "zod";
+import { ERROR_CODES } from "@shared/errors/index.js";
 
 export const registerSchema = z.object({
     name: z
         .string()
         .trim()
-        .min(2, "El nombre es muy corto")
-        .max(50, "El nombre es muy largo")
-        .regex(/^[a-zA-ZÀ-ÿ\s]+$/, "Solo letras en el nombre"),
+        .min(2, ERROR_CODES.VALIDATION.TOO_SHORT)
+        .max(50, ERROR_CODES.VALIDATION.TOO_LONG)
+        .regex(/^[a-zA-ZÀ-ÿ\s]+$/, ERROR_CODES.VALIDATION.INVALID_FORMAT),
     lastName: z
         .string()
         .trim()
-        .min(2, "El apellido es muy corto")
-        .max(50, "El apellido es muy largo")
-        .regex(/^[a-zA-ZÀ-ÿ\s]+$/, "Solo letras en el apellido"),
-    email: z.email("Email inválido").trim().toLowerCase(),
+        .min(2, ERROR_CODES.VALIDATION.TOO_SHORT)
+        .max(50, ERROR_CODES.VALIDATION.TOO_LONG)
+        .regex(/^[a-zA-ZÀ-ÿ\s]+$/, ERROR_CODES.VALIDATION.INVALID_FORMAT),
+    email: z.email(ERROR_CODES.VALIDATION.INVALID_EMAIL).trim().toLowerCase(),
     password: z
         .string()
-        .min(6, "Mínimo 6 caracteres")
+        .min(6, ERROR_CODES.VALIDATION.TOO_SHORT)
         .max(100)
         .refine(
             (value) => value === value.trim(),
-            "La contraseña no puede iniciar ni terminar con espacios",
+            ERROR_CODES.VALIDATION.HAS_LEADING_OR_TRAILING_SPACES,
         )
-        .regex(/[A-Z]/, "Debe tener al menos una mayúscula")
-        .regex(/[a-z]/, "Debe tener al menos una minúscula")
-        .regex(/[0-9]/, "Debe tener al menos un número"),
+        .regex(/[A-Z]/, ERROR_CODES.VALIDATION.MISSING_UPPERCASE)
+        .regex(/[a-z]/, ERROR_CODES.VALIDATION.MISSING_LOWERCASE)
+        .regex(/[0-9]/, ERROR_CODES.VALIDATION.MISSING_NUMBER),
 });
 
 export type RegisterDto = z.infer<typeof registerSchema>;

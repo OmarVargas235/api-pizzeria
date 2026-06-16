@@ -27,3 +27,39 @@ model User {
 
   @@map("users")
 }
+
+model Store {
+  id          String   @id @default(uuid())
+
+  name        String
+  imageUrl    String
+
+  address     String
+  description String
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  pizzas      Pizza[]
+
+  @@map("stores")
+}
+
+model Pizza {
+  id          String   @id @default(uuid())
+
+  name        String
+  imageUrl    String
+
+  description String
+
+  price       Decimal
+
+  storeId     String
+  store       Store @relation(fields: [storeId], references: [id])
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("pizzas")
+}

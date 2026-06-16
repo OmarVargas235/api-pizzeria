@@ -1,6 +1,6 @@
 import bcrypt from "bcrypt";
 import crypto from "crypto";
-import { AppError } from "@shared/errors/app-error.js";
+import { ERROR_CODES, AppError } from "@shared/errors/index.js";
 import { HTTP_STATUS } from "@shared/http/status.js";
 import { EmailService } from "@shared/email/email.service.js";
 import { generateAccessToken, generateRefreshToken, verifyToken } from "@shared/auth/jwt.js";
@@ -18,11 +18,11 @@ export class AuthService {
     login = async (data: LoginDto): Promise<LoginResponseDto> => {
         const user = await this.authRepository.findByEmail(data.email);
         if (!user) {
-            throw new AppError(HTTP_STATUS.UNAUTHORIZED, "Invalid credentials");
+            throw new AppError(HTTP_STATUS.UNAUTHORIZED, ERROR_CODES.AUTH.INVALID_CREDENTIALS);
         }
         const isPasswordValid = await bcrypt.compare(data.password, user.password);
         if (!isPasswordValid) {
-            throw new AppError(HTTP_STATUS.UNAUTHORIZED, "Invalid credentials");
+            throw new AppError(HTTP_STATUS.UNAUTHORIZED, ERROR_CODES.AUTH.INVALID_CREDENTIALS);
         }
         const accessToken = generateAccessToken(user.id);
         const refreshToken = generateRefreshToken(user.id);
@@ -33,7 +33,7 @@ export class AuthService {
     register = async (data: RegisterDto): Promise<RegisterResponseDto> => {
         const existingUser = await this.authRepository.findByEmail(data.email);
         if (existingUser) {
-            throw new AppError(HTTP_STATUS.CONFLICT, "Email already exists");
+            throw new AppError(HTTP_STATUS.CONFLICT, ERROR_CODES.RESOURCE.EMAIL_ALREADY_EXISTS);
         }
         const hashedPassword = await bcrypt.hash(data.password, 12);
         const user = await this.authRepository.createUser({
@@ -47,12 +47,7 @@ export class AuthService {
 
     forgotPassword = async (data: ForgotPasswordDto) => {
         const user = await this.authRepository.findByEmail(data.email);
-        if (!user) {
-            return {
-                message:
-                    "If an account is associated with this email, password reset instructions will be sent shortly",
-            };
-        }
+        if (!user) return;
         const token = crypto.randomBytes(32).toString("hex");
         const expiry = new Date(Date.now() + 1000 * 60 * 15);
         await this.authRepository.updateUserById(user.id, {
@@ -60,19 +55,15 @@ export class AuthService {
             resetTokenExpiry: expiry,
         });
         await this.emailService.sendResetPasswordEmail(user.email, token);
-        return {
-            message:
-                "If an account is associated with this email, password reset instructions will be sent shortly",
-        };
     };
 
     resetPassword = async (data: ResetPasswordDto) => {
         const user = await this.authRepository.findByResetToken(data.token);
         if (!user || !user.resetTokenExpiry) {
-            throw new AppError(HTTP_STATUS.BAD_REQUEST, "Invalid or expired token");
+            throw new AppError(HTTP_STATUS.BAD_REQUEST, ERROR_CODES.AUTH.INVALID_TOKEN);
         }
         if (user.resetTokenExpiry < new Date()) {
-            throw new AppError(HTTP_STATUS.BAD_REQUEST, "Token expired");
+            throw new AppError(HTTP_STATUS.BAD_REQUEST, ERROR_CODES.AUTH.TOKEN_EXPIRED);
         }
         const hashedPassword = await bcrypt.hash(data.newPassword, 12);
         await this.authRepository.updateUserById(user.id, {
@@ -80,14 +71,13 @@ export class AuthService {
             resetToken: null,
             resetTokenExpiry: null,
         });
-        return { message: "Password updated successfully" };
     };
 
     refreshToken = async (data: RefreshTokenDto): Promise<LoginResponseDto> => {
         const payload = verifyToken(data.refreshToken);
         const user = await this.authRepository.findById(payload.userId);
         if (!user || user.refreshToken !== data.refreshToken) {
-            throw new AppError(HTTP_STATUS.UNAUTHORIZED, "Invalid refresh token");
+            throw new AppError(HTTP_STATUS.UNAUTHORIZED, ERROR_CODES.AUTH.INVALID_REFRESH_TOKEN);
         }
         const newAccessToken = generateAccessToken(user.id);
         const newRefreshToken = generateRefreshToken(user.id);
@@ -100,6 +90,5 @@ export class AuthService {
 
     logout = async (userId: string) => {
         await this.authRepository.updateRefreshToken(userId, null);
-        return { message: "Logged out successfully" };
     };
 }

@@ -25,7 +25,11 @@ export class AuthController {
     forgotPassword = async (req: Request, res: Response) => {
         const data = forgotPasswordSchema.parse(req.body);
         const result = await this.authService.forgotPassword(data);
-        return ok(res, result, "Forgot password processed");
+        return ok(
+            res,
+            result,
+            "If an account is associated with this email, password reset instructions will be sent shortly",
+        );
     };
 
     resetPassword = async (req: Request, res: Response) => {
