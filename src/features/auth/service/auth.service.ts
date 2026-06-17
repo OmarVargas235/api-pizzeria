@@ -2,9 +2,9 @@ import bcrypt from "bcrypt";
 import crypto from "crypto";
 import { ERROR_CODES, AppError } from "@shared/errors/index.js";
 import { HTTP_STATUS } from "@shared/http/status.js";
-import { EmailService } from "@shared/email/email.service.js";
+import type { EmailService } from "@shared/email/email.service.js";
 import { generateAccessToken, generateRefreshToken, verifyToken } from "@shared/auth/jwt.js";
-import { AuthRepository } from "../repository/auth.repository.js";
+import type { AuthRepository } from "../repository/auth.repository.js";
 import type { RegisterDto, RegisterResponseDto } from "../dto/register.schema.js";
 import type { LoginDto, LoginResponseDto } from "../dto/login.schema.js";
 import type { ForgotPasswordDto } from "../dto/forgot-password.js";
@@ -12,8 +12,10 @@ import type { ResetPasswordDto } from "../dto/reset-password.schema.js";
 import type { RefreshTokenDto } from "../dto/refresh-token.schema.js";
 
 export class AuthService {
-    private readonly authRepository = new AuthRepository();
-    private readonly emailService = new EmailService();
+    constructor(
+        private readonly authRepository: AuthRepository,
+        private readonly emailService: EmailService,
+    ) {}
 
     login = async (data: LoginDto): Promise<LoginResponseDto> => {
         const user = await this.authRepository.findByEmail(data.email);

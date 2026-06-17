@@ -1,6 +1,6 @@
 import type { Request, Response } from "express";
 import { created, ok } from "@shared/http/responses.js";
-import { AuthService } from "../service/auth.service.js";
+import type { AuthService } from "../service/auth.service.js";
 import { registerSchema } from "../dto/register.schema.js";
 import { loginSchema } from "../dto/login.schema.js";
 import { forgotPasswordSchema } from "../dto/forgot-password.js";
@@ -8,7 +8,7 @@ import { resetPasswordSchema } from "../dto/reset-password.schema.js";
 import { refreshTokenSchema } from "../dto/refresh-token.schema.js";
 
 export class AuthController {
-    private readonly authService = new AuthService();
+    constructor(private readonly authService: AuthService) {}
 
     login = async (req: Request, res: Response) => {
         const data = loginSchema.parse(req.body);

@@ -1,10 +1,10 @@
 import type { Request, Response } from "express";
 import { ok } from "@shared/http/responses.js";
-import { ProfileService } from "../service/profile.service.js";
+import type { ProfileService } from "../service/profile.service.js";
 import { updateProfileSchema } from "../dto/update-profile.schema.ts.js";
 
 export class ProfileController {
-    private readonly profileService = new ProfileService();
+    constructor(private readonly profileService: ProfileService) {}
 
     getProfile = async (req: Request, res: Response) => {
         const userId = req.user!.userId;

@@ -1,13 +1,15 @@
 import { ERROR_CODES, AppError } from "@shared/errors/index.js";
 import { HTTP_STATUS } from "@shared/http/status.js";
-import { StorageService } from "@shared/storage/storage.service.js";
-import { ProfileRepository } from "../repository/profile.repository.js";
+import type { StorageService } from "@shared/storage/storage.service.js";
+import type { ProfileRepository } from "../repository/profile.repository.js";
 import type { ProfileResponseDto } from "../dto/profile-response.dto.js";
 import type { UpdateProfileData } from "../types/index.js";
 
 export class ProfileService {
-    private readonly profileRepository = new ProfileRepository();
-    private readonly storageService = new StorageService();
+    constructor(
+        private readonly profileRepository: ProfileRepository,
+        private readonly storageService: StorageService,
+    ) {}
 
     getProfile = async (userId: string): Promise<ProfileResponseDto> => {
         const user = await this.profileRepository.findById(userId);
