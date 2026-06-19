@@ -2,9 +2,7 @@ import type { Config } from "jest";
 
 const config: Config = {
     testEnvironment: "node",
-    roots: [
-        "<rootDir>/tests/integration",
-    ],
+    roots: ["<rootDir>/tests/integration"],
     transform: {
         "^.+\\.tsx?$": [
             "ts-jest",
@@ -13,11 +11,7 @@ const config: Config = {
             },
         ],
     },
-    moduleFileExtensions: [
-        "ts",
-        "js",
-        "json",
-    ],
+    moduleFileExtensions: ["ts", "js", "json"],
     moduleNameMapper: {
         "^@shared/(.*)\\.js$": "<rootDir>/src/shared/$1",
         "^@features/(.*)\\.js$": "<rootDir>/src/features/$1",

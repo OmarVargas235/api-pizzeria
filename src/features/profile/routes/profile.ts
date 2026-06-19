@@ -21,7 +21,7 @@ router.patch(
     "/avatar",
     authMiddleware,
     upload.single("avatar"),
-    requireFileMiddleware,
+    requireFileMiddleware(),
     asyncHandler(profileController.updateAvatar),
 );
 
