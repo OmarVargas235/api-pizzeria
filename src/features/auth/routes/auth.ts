@@ -5,7 +5,7 @@ import { AuthController } from "../controller/auth.controller.js";
 import { EmailService } from "@shared/email/email.service.js";
 import { asyncHandler } from "@shared/http/async-handler.js";
 import { authMiddleware } from "@shared/middlewares/auth.middleware.js";
-import { authLimiter } from "@shared/middlewares/rate-limit.js";
+import { authLimiter, testSafeLimiter } from "@shared/middlewares/rate-limit.js";
 
 const router = Router();
 
@@ -14,7 +14,7 @@ const emailService = new EmailService();
 const authService = new AuthService(authRepository, emailService);
 const authController = new AuthController(authService);
 
-router.post("/login", authLimiter, asyncHandler(authController.login));
+router.post("/login", testSafeLimiter(authLimiter), asyncHandler(authController.login));
 router.post("/register", asyncHandler(authController.register));
 router.post("/forgot-password", asyncHandler(authController.forgotPassword));
 router.post("/reset-password", asyncHandler(authController.resetPassword));
