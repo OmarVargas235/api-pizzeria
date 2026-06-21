@@ -257,7 +257,6 @@ feature
 ├── dto
 ├── repository
 ├── routes
-├── schema
 ├── service
 └── types
 ```
