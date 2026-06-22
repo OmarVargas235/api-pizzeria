@@ -4,3 +4,4 @@ public/optimize
 public/uploads
 .env
 .env.test
+coverage
