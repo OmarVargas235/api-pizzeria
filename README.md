@@ -4,28 +4,30 @@
 
 Backend REST API para una aplicación de gestión de pizzerías.
 
-La API permite la gestión de usuarios, autenticación, perfiles y sucursales, incluyendo manejo de imágenes y validación de datos.
+La API permite la gestión de usuarios, autenticación, perfiles y sucursales, incluyendo manejo de
+imágenes y validación de datos.
 
-El proyecto está construido con **Node.js**, **TypeScript**, **Express** y **Prisma ORM**, siguiendo una arquitectura basada en features donde cada módulo mantiene separadas sus responsabilidades.
+El proyecto está construido con **Node.js**, **TypeScript**, **Express** y **Prisma ORM**, siguiendo
+una arquitectura basada en features donde cada módulo mantiene separadas sus responsabilidades.
 
 ---
 
 ## 🚀 Tecnologías
 
-* Node.js
-* TypeScript
-* Express
-* Prisma ORM
-* PostgreSQL
-* JWT Authentication
-* Zod
-* Cloudinary
-* Multer
-* Jest
-* Supertest
-* Husky
-* ESLint
-* Prettier
+- Node.js
+- TypeScript
+- Express
+- Prisma ORM
+- PostgreSQL
+- JWT Authentication
+- Zod
+- Cloudinary
+- Multer
+- Jest
+- Supertest
+- Husky
+- ESLint
+- Prettier
 
 ---
 
@@ -33,9 +35,9 @@ El proyecto está construido con **Node.js**, **TypeScript**, **Express** y **Pr
 
 Antes de ejecutar el proyecto necesitas:
 
-* Node.js >= 20
-* PostgreSQL >= 15
-* npm >= 10
+- Node.js >= 20
+- PostgreSQL >= 15
+- npm >= 10
 
 ---
 
@@ -135,9 +137,9 @@ Configuración:
 
 ```json
 {
-  "prisma": {
-    "seed": "tsx prisma/seed.ts"
-  }
+    "prisma": {
+        "seed": "tsx prisma/seed.ts"
+    }
 }
 ```
 
@@ -195,15 +197,15 @@ Las pruebas utilizan una base de datos independiente configurada mediante:
 
 ### Casos cubiertos
 
-* Autenticación JWT
-* Registro y login
-* Refresh tokens
-* Logout
-* Perfil de usuario
-* Actualización de avatar
-* Upload de archivos
-* Sucursales
-* Manejo de errores
+- Autenticación JWT
+- Registro y login
+- Refresh tokens
+- Logout
+- Perfil de usuario
+- Actualización de avatar
+- Upload de archivos
+- Sucursales
+- Manejo de errores
 
 ---
 
@@ -217,8 +219,8 @@ npm run db:test:setup
 
 Este comando ejecuta:
 
-* Migraciones de testing (`prisma migrate deploy`)
-* Seed de testing (`prisma db seed`)
+- Migraciones de testing (`prisma migrate deploy`)
+- Seed de testing (`prisma db seed`)
 
 Utilizando las variables definidas en:
 
@@ -298,11 +300,11 @@ Authorization: Bearer <access_token>
 
 ### Funcionalidades
 
-* Registro de usuario
-* Login
-* Refresh Token
-* Logout
-* Recuperación de contraseña
+- Registro de usuario
+- Login
+- Refresh Token
+- Logout
+- Recuperación de contraseña
 
 ---
 
@@ -310,9 +312,9 @@ Authorization: Bearer <access_token>
 
 ### Funcionalidades
 
-* Obtener perfil autenticado
-* Actualizar información personal
-* Actualizar avatar
+- Obtener perfil autenticado
+- Actualizar información personal
+- Actualizar avatar
 
 Las imágenes se almacenan mediante Cloudinary.
 
@@ -322,14 +324,14 @@ Las imágenes se almacenan mediante Cloudinary.
 
 ### Funcionalidades
 
-* Obtener listado de sucursales
-* Obtener sucursal por ID
+- Obtener listado de sucursales
+- Obtener sucursal por ID
 
 ### Incluye
 
-* Validación de autenticación
-* Manejo de errores
-* Validación de recursos inexistentes
+- Validación de autenticación
+- Manejo de errores
+- Validación de recursos inexistentes
 
 ---
 
@@ -337,14 +339,14 @@ Las imágenes se almacenan mediante Cloudinary.
 
 El proyecto incluye:
 
-* Validación de datos mediante Zod
-* Manejo centralizado de errores
-* JWT Authentication
-* Rate Limiting
-* Helmet Security Headers
-* Validación de archivos
-* Límite de tamaño de uploads
-* Validación de tipos MIME
+- Validación de datos mediante Zod
+- Manejo centralizado de errores
+- JWT Authentication
+- Rate Limiting
+- Helmet Security Headers
+- Validación de archivos
+- Límite de tamaño de uploads
+- Validación de tipos MIME
 
 ---
 
@@ -369,10 +371,10 @@ El proyecto incluye:
 
 ## 📌 Próximas mejoras
 
-* Documentación OpenAPI / Swagger
-* Validación avanzada de query params
-* Dockerización
-* Pipeline CI/CD
+- Documentación OpenAPI / Swagger
+- Validación avanzada de query params
+- Dockerización
+- Pipeline CI/CD
 
 ---
 
