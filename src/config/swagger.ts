@@ -9,5 +9,5 @@ export const swaggerSpec = swaggerJsdoc({
         },
         servers: [{ url: "http://localhost:5000" }],
     },
-    apis: ["./src/**/docs/*.ts"],
+    apis: ["./src/**/docs/*.ts", "./src/**/docs/common/*.ts"],
 });

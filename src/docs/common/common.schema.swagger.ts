@@ -8,19 +8,18 @@
  *       description: Standard API error response.
  *
  *       example:
- *         message: INVALID_CREDENTIALS
+ *         message: ERROR_CODE
  *         data: null
  *
  *       properties:
  *
  *         message:
  *           type: string
- *           example: INVALID_CREDENTIALS
+ *           example: ERROR_CODE
  *
  *         data:
  *           nullable: true
  *           example: null
- *
  *
  *     GenericMessageResponse:
  *       type: object
