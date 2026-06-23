@@ -9,14 +9,20 @@
  *         application/json:
  *           schema:
  *             $ref: '#/components/schemas/ErrorResponse'
+ *           example:
+ *             message: VALIDATION_ERROR
+ *             data: null
  *
  *
  *     Unauthorized:
- *       description: Authentication required or invalid credentials.
+ *       description: Authentication failed or missing authentication token.
  *       content:
  *         application/json:
  *           schema:
  *             $ref: '#/components/schemas/ErrorResponse'
+ *           example:
+ *             message: INVALID_TOKEN
+ *             data: null
  *
  *
  *     Forbidden:
@@ -25,6 +31,9 @@
  *         application/json:
  *           schema:
  *             $ref: '#/components/schemas/ErrorResponse'
+ *           example:
+ *             message: FORBIDDEN_ACTION
+ *             data: null
  *
  *
  *     NotFound:
@@ -33,6 +42,9 @@
  *         application/json:
  *           schema:
  *             $ref: '#/components/schemas/ErrorResponse'
+ *           example:
+ *             message: RESOURCE_NOT_FOUND
+ *             data: null
  *
  *
  *     Conflict:
@@ -41,6 +53,9 @@
  *         application/json:
  *           schema:
  *             $ref: '#/components/schemas/ErrorResponse'
+ *           example:
+ *             message: RESOURCE_CONFLICT
+ *             data: null
  *
  *
  *     InternalServerError:
@@ -49,4 +64,7 @@
  *         application/json:
  *           schema:
  *             $ref: '#/components/schemas/ErrorResponse'
+ *           example:
+ *             message: INTERNAL_SERVER_ERROR
+ *             data: null
  */
