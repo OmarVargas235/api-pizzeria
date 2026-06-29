@@ -33,14 +33,14 @@ describe("StoreService", () => {
         expect(result).toEqual({
             id: "store-1",
             name: "Pizza Store",
-            imageUrl: "store.jpg",
+            imageUrl: "store.png",
             address: "Street 1",
             description: "Best pizzas",
             pizzas: [
                 {
                     id: "pizza-1",
                     name: "Pepperoni",
-                    imageUrl: "pizza.jpg",
+                    imageUrl: "pizza.png",
                     description: "Pepperoni pizza",
                     price: 25000,
                 },
@@ -61,7 +61,7 @@ describe("StoreService", () => {
         expect(result.data[0]).toEqual({
             id: "store-1",
             name: "Pizza Store",
-            imageUrl: "store.jpg",
+            imageUrl: "store.png",
             address: "Street 1",
         });
     });

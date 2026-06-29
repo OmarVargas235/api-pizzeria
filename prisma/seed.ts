@@ -3,21 +3,21 @@ import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
 const storeImages = [
-    "/assets/store-1.jpg",
-    "/assets/store-2.jpg",
-    "/assets/store-3.jpg",
-    "/assets/store-4.jpg",
-    "/assets/store-5.jpg",
-    "/assets/store-6.jpg",
+    "/assets/store-1.png",
+    "/assets/store-2.png",
+    "/assets/store-3.png",
+    "/assets/store-4.png",
+    "/assets/store-5.png",
+    "/assets/store-6.png",
 ];
 
 const pizzaImages = [
-    "/assets/pizza-1.jpg",
-    "/assets/pizza-2.jpg",
-    "/assets/pizza-3.jpg",
-    "/assets/pizza-4.jpg",
-    "/assets/pizza-5.jpg",
-    "/assets/pizza-6.jpg",
+    "/assets/pizza-1.png",
+    "/assets/pizza-2.png",
+    "/assets/pizza-3.png",
+    "/assets/pizza-4.png",
+    "/assets/pizza-5.png",
+    "/assets/pizza-6.png",
 ];
 
 async function main() {

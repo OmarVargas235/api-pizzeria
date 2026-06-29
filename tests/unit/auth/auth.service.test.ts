@@ -161,7 +161,7 @@ describe("AuthService", () => {
         await expect(
             authService.resetPassword({
                 token: "token",
-                newPassword: "123456",
+                password: "123456",
             }),
         ).rejects.toMatchObject({
             status: HTTP_STATUS.BAD_REQUEST,
@@ -177,7 +177,7 @@ describe("AuthService", () => {
         await expect(
             authService.resetPassword({
                 token: "token",
-                newPassword: "123456",
+                password: "123456",
             }),
         ).rejects.toMatchObject({
             status: HTTP_STATUS.BAD_REQUEST,
@@ -194,7 +194,7 @@ describe("AuthService", () => {
         await expect(
             authService.resetPassword({
                 token: "token",
-                newPassword: "123456",
+                password: "123456",
             }),
         ).rejects.toMatchObject({
             status: HTTP_STATUS.BAD_REQUEST,
@@ -211,7 +211,7 @@ describe("AuthService", () => {
         mockedBcrypt.hash.mockResolvedValue("hashed-password");
         await authService.resetPassword({
             token: "token",
-            newPassword: "123456",
+            password: "123456",
         });
         expect(mockAuthRepository.updateUserById).toHaveBeenCalledWith(userMock.id, {
             password: "hashed-password",

@@ -191,7 +191,7 @@ describe("POST /auth/reset-password", () => {
     it("should reset password successfully", async () => {
         const email = `test-${Date.now()}@mail.com`;
         const oldPassword = "Password123";
-        const newPassword = "NewPassword123";
+        const password = "NewPassword123";
         await request(app).post("/auth/register").send({
             email,
             password: oldPassword,
@@ -204,12 +204,12 @@ describe("POST /auth/reset-password", () => {
         });
         const response = await request(app).post("/auth/reset-password").send({
             token: user?.resetToken,
-            newPassword,
+            password,
         });
         expect(response.status).toBe(200);
         const loginResponse = await request(app).post("/auth/login").send({
             email,
-            password: newPassword,
+            password: password,
         });
         expect(loginResponse.status).toBe(200);
     });
@@ -217,7 +217,7 @@ describe("POST /auth/reset-password", () => {
     it("should reject invalid reset token", async () => {
         const response = await request(app).post("/auth/reset-password").send({
             token: "invalid-token",
-            newPassword: "NewPassword123",
+            password: "NewPassword123",
         });
         expect(response.status).toBe(400);
     });

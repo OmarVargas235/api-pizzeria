@@ -1,6 +1,6 @@
 import request from "supertest";
-import app from "../../../src/app.js";
 import { prisma } from "@database/prisma.js";
+import app from "../../../src/app.js";
 import { ERROR_CODES } from "@shared/errors/index.js";
 
 jest.mock("@shared/storage/cloudinary.js", () => ({

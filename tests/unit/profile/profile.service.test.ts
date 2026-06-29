@@ -88,24 +88,24 @@ describe("ProfileService", () => {
     it("should avatar updated profile successfully", async () => {
         mockProfileRepository.findById.mockResolvedValue(userMock);
         mockStorageService.uploadAvatar.mockResolvedValue({
-            secure_url: "https://cloudinary.com/avatar.jpg",
+            secure_url: "https://cloudinary.com/avatar.png",
         } as UploadApiResponse);
         mockProfileRepository.updateAvatar.mockResolvedValue({
             ...userMock,
-            avatarUrl: "https://cloudinary.com/avatar.jpg",
+            avatarUrl: "https://cloudinary.com/avatar.png",
         });
         const result = await profileService.updateAvatar("user-1", avatarMock);
         expect(mockStorageService.uploadAvatar).toHaveBeenCalledWith(avatarMock.buffer, "user-1");
         expect(mockProfileRepository.updateAvatar).toHaveBeenCalledWith(
             "user-1",
-            "https://cloudinary.com/avatar.jpg",
+            "https://cloudinary.com/avatar.png",
         );
         expect(result).toEqual({
             id: "user-1",
             email: "test@gmail.com",
             firstName: "pepito",
             lastName: "perez",
-            avatarUrl: "https://cloudinary.com/avatar.jpg",
+            avatarUrl: "https://cloudinary.com/avatar.png",
         });
     });
 });
