@@ -3,7 +3,7 @@ import { ERROR_CODES } from "@shared/errors/index.js";
 
 export const resetPasswordSchema = z.object({
     token: z.string().min(1),
-    newPassword: z
+    password: z
         .string()
         .min(6, ERROR_CODES.VALIDATION.TOO_SHORT)
         .max(100)

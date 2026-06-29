@@ -3,7 +3,7 @@ import { transporter } from "./mailer.js";
 
 export class EmailService {
     async sendResetPasswordEmail(email: string, token: string) {
-        const resetLink = `${env.FRONTEND_URL}/auth/reset-password?token=${token}`;
+        const resetLink = `${env.FRONTEND_URL}/reset-password?token=${token}`;
         await transporter.sendMail({
             from: `"Auth System" <${process.env.EMAIL_USER}>`,
             to: email,

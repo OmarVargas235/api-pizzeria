@@ -67,7 +67,7 @@ export class AuthService {
         if (user.resetTokenExpiry < new Date()) {
             throw new AppError(HTTP_STATUS.BAD_REQUEST, ERROR_CODES.AUTH.TOKEN_EXPIRED);
         }
-        const hashedPassword = await bcrypt.hash(data.newPassword, 12);
+        const hashedPassword = await bcrypt.hash(data.password, 12);
         await this.authRepository.updateUserById(user.id, {
             password: hashedPassword,
             resetToken: null,

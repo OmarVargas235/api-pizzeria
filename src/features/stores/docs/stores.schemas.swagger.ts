@@ -26,7 +26,7 @@
  *
  *         imageUrl:
  *           type: string
- *           example: /assets/store-5.jpg
+ *           example: /assets/store-5.png
  *
  *         address:
  *           type: string
@@ -73,7 +73,7 @@
  *
  *         imageUrl:
  *           type: string
- *           example: /assets/pizza-1.jpg
+ *           example: /assets/pizza-1.png
  *
  *         description:
  *           type: string
@@ -109,7 +109,7 @@
  *
  *         imageUrl:
  *           type: string
- *           example: /assets/store-5.jpg
+ *           example: /assets/store-5.png
  *
  *         address:
  *           type: string

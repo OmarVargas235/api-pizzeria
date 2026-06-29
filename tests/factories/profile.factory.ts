@@ -16,13 +16,13 @@ export const createUser = () => ({
 
 export const createFileAvatar = () => ({
     fieldname: "avatar",
-    originalname: "avatar.jpg",
+    originalname: "avatar.png",
     encoding: "7bit",
     mimetype: "image/jpeg",
     size: 1024,
     destination: "uploads",
-    filename: "avatar.jpg",
-    path: "uploads/avatar.jpg",
+    filename: "avatar.png",
+    path: "uploads/avatar.png",
     buffer: Buffer.from("fake-image"),
     stream: new Readable({ read() {} }),
 });
